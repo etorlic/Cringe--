@@ -1,0 +1,35 @@
+{
+  "name": "compilers",
+  "version": "1.0.0",
+  "description": "language for compilers",
+  "main": "src/language.js",
+  "type": "module",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "c8 node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/etorlic/Compilers.git"
+  },
+  "keywords": [
+    "Compilers"
+  ],
+  "author": "Emin Torlic, Erik Navarro, Jonathan Yeh, Joshua Stukenborg, Zach Irving",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/etorlic/Compilers/issues"
+  },
+  "homepage": "https://github.com/etorlic/Compilers#readme",
+  "devDependencies": {
+    "c8": "^7.11.0",
+    "mocha": "^9.2.0"
+  },
+  "dependencies": {
+    "ohm-js": "^16.2.0"
+  }
+}
