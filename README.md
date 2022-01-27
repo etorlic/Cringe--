@@ -1,6 +1,6 @@
-# Insert Language Name Here
+# Cringe--
 
-Put our intro paragraph/story in here
+Cringe-- is a language crafted upon the cringeist topics and coding practices of our modern era. Every line of code that you write will have you cringing in disgust as you attempt to write functional code.
 
 ## Features
 
