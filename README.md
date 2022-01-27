@@ -27,7 +27,7 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 
 <td>
 
-`retweet("Hello, World!")`
+`retweet("Hello, World!")`;;
 
 </td>
 </table>
