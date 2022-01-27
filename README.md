@@ -1,3 +1,4 @@
+![alt text](./docs/Cringe--Logo.png)
 # Cringe--
 Hi, I'm a Scorpio. 
 
