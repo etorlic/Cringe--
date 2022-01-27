@@ -13,6 +13,25 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 
 ## Examples
 
+### Hello World 
+
+<table>
+<tr> <th>JavaScript</th><th>Cringe--</th><tr>
+</tr>
+
+<td>
+
+`console.log("Hello, World!")`
+
+</td>
+
+<td>
+
+`retweet("Hello, World!")`
+
+</td>
+</table>
+
 ### Declarations
 
 <table>
