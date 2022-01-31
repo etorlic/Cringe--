@@ -1,0 +1,2 @@
+  GangGang emptyList == [];;
+  GangGang nonEmptyList == [1,2,3,4];;

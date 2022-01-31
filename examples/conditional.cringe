@@ -1,0 +1,4 @@
+\\If x equals 5, do something
+vibeCheck :x=5: { 
+    doSomething;;
+}

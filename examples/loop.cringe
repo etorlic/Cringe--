@@ -1,0 +1,4 @@
+\\So long as x is less than 10, do something. 
+infiniteLoop :x<10: ({ 
+    doSomething;;
+}
