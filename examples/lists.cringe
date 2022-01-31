@@ -1,2 +1,2 @@
-  GangGang emptyList == [];;
-  GangGang nonEmptyList == [1,2,3,4];;
+ int[] emptyList == [];;
+ int[] nonEmptyList == [1,2,3,4];;
