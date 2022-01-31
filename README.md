@@ -124,17 +124,9 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 <td>
 
 ```
-  list == 
+  list == []
   
 ```
-  
-  flossin
-  discord
-  amogus 
-  kpop 
-  dab 
-  edating 
-  
   
 </td>
 </table>
