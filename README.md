@@ -124,8 +124,8 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 <td>
 
 ```
-  emptyList == []
-  nonEmptyList == [1,2,3,4]
+  emptyList == [];;
+  nonEmptyList == [1,2,3,4];;
 ```
   
 </td>
