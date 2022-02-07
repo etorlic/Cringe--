@@ -103,7 +103,7 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 
 ```
   int x == 0;;
-  infiniteLoop :x<10: ({ 
+  infiniteLoop :x<10: { 
     print:x:
     x == x + 1 ;;
   }
