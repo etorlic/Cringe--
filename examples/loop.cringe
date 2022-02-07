@@ -1,4 +1,5 @@
-\\So long as x is less than 10, do something. 
-infiniteLoop :x<10: ({ 
-    doSomething;;
+int x == 0;;
+infiniteLoop :x<10: { 
+  print:x:
+  x == x + 1 ;;
 }

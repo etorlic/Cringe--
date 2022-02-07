@@ -1,4 +1,4 @@
-\\If x equals 5, do something
+int x == 5;;
 vibeCheck :x=5: { 
-    doSomething;;
+  print:x:;;
 }
