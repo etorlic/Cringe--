@@ -28,7 +28,7 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 
 <td>
 
-`retweet("Hello, World!")`;;
+`retweet:"Hello, World!":;;`
 
 </td>
 </table>
@@ -74,7 +74,7 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 ```
   int x == 5;;
   vibeCheck :x=5: { 
-    print:x:;;
+    retweet:x:;;
   }
 ```
   
@@ -104,7 +104,7 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 ```
   int x == 0;;
   infiniteLoop :x<10: { 
-    print:x:
+    retweet:x:
     x == x + 1 ;;
   }
 ```
