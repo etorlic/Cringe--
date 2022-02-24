@@ -20,10 +20,22 @@ export class VariableDeclaration {
 }
 
 export class If {
-constructor(ifStatement) {
-    Object.assign(this, {ifStatment})
-    }
+    constructor(condition, block, elseifs, elseStatement) {
+        Object.assign(this, {condition, block, elseifs, elseStatement})
+        }
 }
+
+export class ElseIf {
+    constructor(condition, block) {
+        Object.assign(this, {condition, block})
+        }
+}
+
+export class Else {
+    constructor(block) {
+        Object.assign(this, {block})
+        }
+    }
 
 export class FunctionDeclaration {
   constructor(type, id, params, body) {
@@ -43,6 +55,12 @@ export class WhileStatement {
   }
 }
 
+export class ReturnStatement {
+    constructor(value) {
+      Object.assign(this, { value })
+    }
+  }
+
 export class PrintStatement {
   constructor(argument) {
     Object.assign(this, { argument })
@@ -55,10 +73,16 @@ export class Call {
   }
 }
 
-export class Conditional {
-  constructor(test, consequent, alternate) {
-    Object.assign(this, { test, consequent, alternate })
-  }
+export class Type {
+    constructor(type) {
+      Object.assign(this, { type })
+    }
+}
+
+export class Array {
+    constructor(values) {
+      Object.assign(this, { values })
+    }
 }
 
 export class BinaryExpression {

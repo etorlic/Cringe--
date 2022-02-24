@@ -11,8 +11,14 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Statement_declaration(type, id, _eq, initializer, _semicolon) {
     return new core.VariableDeclaration(type.ast(), id.ast(), initializer.ast())
   },
-  Statement_if(ifStatement) {
-      return new core.If(ifStatement.ast())
+  Statement_If(_vibeCheck, _open, condition, _close, block, elseifs, elseStatement) {
+      return new core.If(condition.ast(), block.ast(), elseifs.asIteration().ast(), elseStatement.ast())
+  }, 
+  Statement_ElseIf(_recount, _open, condition, _close, block) {
+      return new core.ElseIf(condition, block)
+  }, 
+  Statement_Else(_badVibes, block) {
+    return new core.Else(block)
   }, 
   Statement_fundec(_fun, type, id, _open, params,  _close, block) {
     return new core.FunctionDeclaration(type.ast(), id.ast(), params.asIteration().ast(), block.ast())
@@ -20,11 +26,14 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Statement_assign(id, _eq, expression, _semicolon) {
     return new core.Assignment(id.ast(), expression.ast())
   },
+  Statement_while(_while, _open, exp, _close, block) {
+    return new core.WhileStatement(exp.ast(), block.ast())
+  },
+  Statement_return(_return, exp, _semicolon) {
+    return new core.ReturnStatement(exp.ast())
+  },
   Statement_print(_print, argument, _semicolon) {
     return new core.PrintStatement(argument.ast())
-  },
-  Statement_while(_while, test, body) {
-    return new core.WhileStatement(test.ast(), body.ast())
   },
   Block(_open, body, _close) {
     return body.ast()
@@ -56,8 +65,17 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Exp7_parens(_open, expression, _close) {
     return expression.ast()
   },
-  Call(callee, _left, args, _right) {
-    return new core.Call(callee.ast(), args.asIteration().ast())
+  Call(id, _left, args, _right) {
+    return new core.Call(id.ast(), args.asIteration().ast())
+  },
+  Type_array(type, _open, _close) {
+    return new core.Type(type.ast())
+  },
+  Type(id) {
+    return new id.ast()
+  },
+  Array(_open, values, _close) {
+    return new core.Array(values.asIteration().ast())
   },
   id(_first, _rest) {
     return new core.Token("Id", this.source)
