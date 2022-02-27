@@ -28,7 +28,7 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 
 <td>
 
-`retweet("Hello, World!")`;;
+`retweet:"Hello, World!":;;`
 
 </td>
 </table>
@@ -61,8 +61,9 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 <td>
 
 ```
+  let x = 5
   if (x==5) {
-    doSomething
+    console.log(x)
   }
 ```
 
@@ -71,8 +72,9 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 <td>
 
 ```
+  int x == 5;;
   vibeCheck :x=5: { 
-    doSomething;;
+    retweet:x:;;
   }
 ```
   
@@ -88,8 +90,10 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 <td>
 
 ```
+  let x = 0
   while (x<10) {
-    doSomething
+    console.log(x)
+    x = x + 1
   }
 ```
 
@@ -98,8 +102,10 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 <td>
 
 ```
-  infiniteLoop :x<10: ({ 
-    doSomething;;
+  int x == 0;;
+  infiniteLoop :x<10: { 
+    retweet:x:
+    x == x + 1 ;;
   }
 ```
   
@@ -115,8 +121,8 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 <td>
 
 ```
-  list = []
-  list
+  let emptyList = []
+  let nonEmptyList = [1,2,3,4]
 ```
 
 </td>
@@ -124,17 +130,9 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 <td>
 
 ```
-  list == 
-  
+  int[] emptyList == [];;
+  int[] nonEmptyList == [1,2,3,4];;
 ```
-  
-  flossin
-  discord
-  amogus 
-  kpop 
-  dab 
-  edating 
-  
   
 </td>
 </table>

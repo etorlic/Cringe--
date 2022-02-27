@@ -1,0 +1,62 @@
+CringeMinusMinus {
+  Program = Statement+
+    
+  Statement = Type id "==" Exp ";;" -- declaration
+  			| If
+            | function Type id ":" Type id ":"  Block   -- fundec
+             | id "=" Exp ";;"                           -- assign
+             | Call ";;"                                 -- call
+             | while ":" Exp ":" Block                   -- while
+             | return Exp ";;" 	--return
+             | print ":" Exp ":" ";;" --print
+           
+
+  Exp        = Exp1 "?" Exp1 ":" Exp                    -- condition
+             | Exp1
+  Exp1       = Exp2 ("&&" Exp2)+                        -- and
+             | Exp2 ("||" Exp2)+                        -- or
+             | Exp2
+  Exp2       = Exp3 ("<"|"<="|"="|"!="|">="|">") Exp3  -- binary
+             | Exp3
+  Exp3       = Exp3 ("+" | "-") Exp4                    -- binary
+             | Exp4
+  Exp4       = Exp4 ("*" | "/" | "%") Exp5              -- binary
+             | Exp5
+  Exp5       = Exp6 "**" Exp5                           -- binary
+             | Exp6
+  Exp6       = ("!" | "-") Exp6                         -- unary
+             | Exp7
+  Exp7       = num
+             | true
+             | false
+             | Call
+             | id
+             | Array
+             | "\"" idchar* "\"" --string
+             | ":" Exp ":"                              -- parens
+  Type	     = Type "[" "]" --array
+  			   | primType
+               | id
+  primType	 = "int" | "boolin" | "dublin" | "car" | "manyCars"
+  Array		 = "[" Args "]"
+  Block      = "{" Statement+ "}"
+  Call       = id ":" Args ":"
+  If = "vibeCheck" ":" Exp ":" Block ElseIf* Else?
+  ElseIf = "recount" ":" Exp ":" Block 
+  Else = "badVibes" Block
+  FuncParam  = Type id
+  ParamDec	 = ListOf<FuncParam, ","> --paramdec
+  Params     = ListOf<id, ",">
+  Args       = ListOf<Exp, ",">
+  function   = "flossin" ~idchar
+  while      = "infiniteLoop" ~idchar
+  true       = "based" ~idchar
+  false      = "unbased" ~idchar
+  return 	 = "dab" ~idchar
+  print	 	 = "retweet" ~idchar
+  keyword    =  while | true | false
+  num        = digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
+  id         = ~keyword letter idchar*
+  idchar     = letter | digit | "_"
+  space     += "//" (~"\n" any)* "\n"                   -- comment
+}
