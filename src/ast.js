@@ -28,16 +28,17 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
     )
   },
   Statement_ElseIf(_recount, _open, condition, _close, block) {
-    return new core.ElseIf(condition, block)
+    return new core.ElseIf(condition.ast(), block.ast())
   },
   Statement_Else(_badVibes, block) {
-    return new core.Else(block)
+    return new core.Else(block.ast())
   },
-  Statement_fundec(_fun, type, id, _open, params, _close, block) {
+  Statement_fundec(_fun, type, id, _open, paramType, paramId, _close, block) {
     return new core.FunctionDeclaration(
       type.ast(),
       id.ast(),
-      params.asIteration().ast(),
+      paramType.ast(),
+      paramId.ast(),
       block.ast()
     )
   },
@@ -50,20 +51,22 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Statement_return(_return, exp, _semicolon) {
     return new core.ReturnStatement(exp.ast())
   },
-  Statement_print(_print, argument, _semicolon) {
+  Statement_print(_retweet, _open, argument, _close, _semicolon) {
     return new core.PrintStatement(argument.ast())
   },
   Block(_open, body, _close) {
     return body.ast()
   },
-  Exp_unary(op, operand) {
-    return new core.UnaryExpression(op.ast(), operand.ast())
-  },
-  Exp_ternary(test, _questionMark, consequent, _colon, alternate) {
+  Exp_conditional(test, _questionMark, consequent, _colon, alternate) {
     return new core.Conditional(test.ast(), consequent.ast(), alternate.ast())
   },
-  Exp1_binary(left, op, right) {
-    return new core.BinaryExpression(op.ast(), left.ast(), right.ast())
+  Exp1_or(left, _ops, right) {
+    const operands = [left.ast(), ...right.ast()]
+    return operands.reduce((x, y) => new core.BinaryExpression("||", x, y))
+  },
+  Exp1_and(left, _ops, right) {
+    const operands = [left.ast(), ...right.ast()]
+    return operands.reduce((x, y) => new core.BinaryExpression("&&", x, y))
   },
   Exp2_binary(left, op, right) {
     return new core.BinaryExpression(op.ast(), left.ast(), right.ast())
@@ -77,8 +80,8 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Exp5_binary(left, op, right) {
     return new core.BinaryExpression(op.ast(), left.ast(), right.ast())
   },
-  Exp6_binary(left, op, right) {
-    return new core.BinaryExpression(op.ast(), left.ast(), right.ast())
+  Exp6_unary(op, operand) {
+    return new core.BinaryExpression(op.ast(), operand.ast())
   },
   Exp7_parens(_open, expression, _close) {
     return expression.ast()
