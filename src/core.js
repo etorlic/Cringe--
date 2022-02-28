@@ -20,22 +20,22 @@ export class VariableDeclaration {
 }
 
 export class If {
-    constructor(condition, block, elseifs, elseStatement) {
-        Object.assign(this, {condition, block, elseifs, elseStatement})
-        }
+  constructor(condition, block, elseifs, elseStatement) {
+    Object.assign(this, { condition, block, elseifs, elseStatement })
+  }
 }
 
 export class ElseIf {
-    constructor(condition, block) {
-        Object.assign(this, {condition, block})
-        }
+  constructor(condition, block) {
+    Object.assign(this, { condition, block })
+  }
 }
 
 export class Else {
-    constructor(block) {
-        Object.assign(this, {block})
-        }
-    }
+  constructor(block) {
+    Object.assign(this, { block })
+  }
+}
 
 export class FunctionDeclaration {
   constructor(type, id, params, body) {
@@ -56,10 +56,10 @@ export class WhileStatement {
 }
 
 export class ReturnStatement {
-    constructor(value) {
-      Object.assign(this, { value })
-    }
+  constructor(value) {
+    Object.assign(this, { value })
   }
+}
 
 export class PrintStatement {
   constructor(argument) {
@@ -74,15 +74,15 @@ export class Call {
 }
 
 export class Type {
-    constructor(type) {
-      Object.assign(this, { type })
-    }
+  constructor(type) {
+    Object.assign(this, { type })
+  }
 }
 
 export class Array {
-    constructor(values) {
-      Object.assign(this, { values })
-    }
+  constructor(values) {
+    Object.assign(this, { values })
+  }
 }
 
 export class BinaryExpression {
@@ -165,7 +165,9 @@ Program.prototype[util.inspect.custom] = function () {
     function view(e) {
       if (tags.has(e)) return `#${tags.get(e)}`
       if (e?.constructor === Token) {
-        return `(${e.category},"${e.lexeme}"${e.value ? "," + view(e.value) : ""})`
+        return `(${e.category},"${e.lexeme}"${
+          e.value ? "," + view(e.value) : ""
+        })`
       }
       if (Array.isArray(e)) return `[${e.map(view)}]`
       return util.inspect(e)
