@@ -11,17 +11,35 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Statement_declaration(type, id, _eq, initializer, _semicolon) {
     return new core.VariableDeclaration(type.ast(), id.ast(), initializer.ast())
   },
-  Statement_If(_vibeCheck, _open, condition, _close, block, elseifs, elseStatement) {
-      return new core.If(condition.ast(), block.ast(), elseifs.asIteration().ast(), elseStatement.ast())
-  }, 
+  Statement_If(
+    _vibeCheck,
+    _open,
+    condition,
+    _close,
+    block,
+    elseifs,
+    elseStatement
+  ) {
+    return new core.If(
+      condition.ast(),
+      block.ast(),
+      elseifs.asIteration().ast(),
+      elseStatement.ast()
+    )
+  },
   Statement_ElseIf(_recount, _open, condition, _close, block) {
-      return new core.ElseIf(condition, block)
-  }, 
+    return new core.ElseIf(condition, block)
+  },
   Statement_Else(_badVibes, block) {
     return new core.Else(block)
-  }, 
-  Statement_fundec(_fun, type, id, _open, params,  _close, block) {
-    return new core.FunctionDeclaration(type.ast(), id.ast(), params.asIteration().ast(), block.ast())
+  },
+  Statement_fundec(_fun, type, id, _open, params, _close, block) {
+    return new core.FunctionDeclaration(
+      type.ast(),
+      id.ast(),
+      params.asIteration().ast(),
+      block.ast()
+    )
   },
   Statement_assign(id, _eq, expression, _semicolon) {
     return new core.Assignment(id.ast(), expression.ast())
@@ -93,12 +111,12 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
     return new core.Token("Sym", this.source)
   },
   _iter(...children) {
-    return children.map(child => child.ast())
+    return children.map((child) => child.ast())
   },
 })
 
 export default function ast(sourceCode) {
-  const match = bellaGrammar.match(sourceCode)
+  const match = cringeMMGrammar.match(sourceCode)
   if (!match.succeeded()) core.error(match.message)
   return astBuilder(match).ast()
 }

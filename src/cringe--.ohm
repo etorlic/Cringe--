@@ -4,7 +4,7 @@ CringeMinusMinus {
   Statement = Type id "==" Exp ";;" -- declaration
   			| If
             | function Type id ":" Type id ":"  Block   -- fundec
-             | id "=" Exp ";;"                           -- assign
+             | id "==" Exp ";;"                           -- assign
              | Call ";;"                                 -- call
              | while ":" Exp ":" Block                   -- while
              | return Exp ";;" 	--return

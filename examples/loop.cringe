@@ -1,5 +1,5 @@
 int x == 0;;
 infiniteLoop :x<10: { 
-  print:x:
+  retweet:x:;;
   x == x + 1 ;;
 }

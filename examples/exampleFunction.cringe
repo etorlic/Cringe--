@@ -1,4 +1,4 @@
-\\Check if the parameter vibe is true, and if so, return true. Otherwise return false. 
+//Check if the parameter vibe is true, and if so, return true. Otherwise return false. 
 flossin boolin exampleFunction:boolin vibe: { 
   vibeCheck :vibe=based: {
     dab based;;
