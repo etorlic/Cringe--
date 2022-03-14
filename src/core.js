@@ -79,7 +79,7 @@ export class Type {
   }
 }
 
-export class Array {
+export class CringeArray {
   constructor(values) {
     Object.assign(this, { values })
   }

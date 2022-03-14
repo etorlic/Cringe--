@@ -10,8 +10,7 @@ CringeMinusMinus {
              | return Exp ";;" 	--return
              | print ":" Exp ":" ";;" --print
            
-
-  Exp        = Exp1 "?" Exp1 ":" Exp                    -- conditional
+  Exp        = Exp1 "?" Exp1 ":" Exp                    -- condition
              | Exp1
   Exp1       = Exp2 ("&&" Exp2)+                        -- and
              | Exp2 ("||" Exp2)+                        -- or
@@ -30,15 +29,15 @@ CringeMinusMinus {
              | true
              | false
              | Call
-             | id
-             | Array
+
+             | CringeArray
              | "\"" idchar* "\"" --string
              | ":" Exp ":"                              -- parens
   Type	     = Type "[" "]" --array
   			   | primType
                | id
   primType	 = "int" | "boolin" | "dublin" | "car" | "manyCars"
-  Array		 = "[" Args "]"
+  CringeArray		 = "[" Args "]"
   Block      = "{" Statement+ "}"
   Call       = id ":" Args ":"
   If = "vibeCheck" ":" Exp ":" Block ElseIf* Else?

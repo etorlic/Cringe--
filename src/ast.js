@@ -11,26 +11,18 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Statement_declaration(type, id, _eq, initializer, _semicolon) {
     return new core.VariableDeclaration(type.ast(), id.ast(), initializer.ast())
   },
-  Statement_If(
-    _vibeCheck,
-    _open,
-    condition,
-    _close,
-    block,
-    elseifs,
-    elseStatement
-  ) {
+  If(_vibeCheck, _open, condition, _close, block, elseifs, elseStatement) {
     return new core.If(
       condition.ast(),
       block.ast(),
       elseifs.asIteration().ast(),
-      elseStatement.ast()
+      null // elseStatement.ast()
     )
   },
-  Statement_ElseIf(_recount, _open, condition, _close, block) {
+  ElseIf(_recount, _open, condition, _close, block) {
     return new core.ElseIf(condition.ast(), block.ast())
   },
-  Statement_Else(_badVibes, block) {
+  Else(_badVibes, block) {
     return new core.Else(block.ast())
   },
   Statement_fundec(_fun, type, id, _open, paramType, paramId, _close, block) {
@@ -51,13 +43,16 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Statement_return(_return, exp, _semicolon) {
     return new core.ReturnStatement(exp.ast())
   },
+  Statement_call(call, _semicolons) {
+    return call.ast()
+  },
   Statement_print(_retweet, _open, argument, _close, _semicolon) {
     return new core.PrintStatement(argument.ast())
   },
   Block(_open, body, _close) {
     return body.ast()
   },
-  Exp_conditional(test, _questionMark, consequent, _colon, alternate) {
+  Exp_condition(test, _questionMark, consequent, _colon, alternate) {
     return new core.Conditional(test.ast(), consequent.ast(), alternate.ast())
   },
   Exp1_or(left, _ops, right) {
@@ -86,6 +81,9 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Exp7_parens(_open, expression, _close) {
     return expression.ast()
   },
+  Exp7_string(_openQuote, _string, _closeQuote) {
+    return new core.Token("String", this.source)
+  },
   Call(id, _left, args, _right) {
     return new core.Call(id.ast(), args.asIteration().ast())
   },
@@ -95,7 +93,7 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Type(id) {
     return new id.ast()
   },
-  Array(_open, values, _close) {
+  CringeArray(_open, values, _close) {
     return new core.Array(values.asIteration().ast())
   },
   id(_first, _rest) {
@@ -120,6 +118,7 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
 
 export default function ast(sourceCode) {
   const match = cringeMMGrammar.match(sourceCode)
+  console.log(match.succeeded())
   if (!match.succeeded()) core.error(match.message)
   return astBuilder(match).ast()
 }
