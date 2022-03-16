@@ -35,9 +35,12 @@ CringeMinusMinus {
              | "\"" idchar* "\"" --string
              | ":" Exp ":"                              -- parens
   Type	     = Type "[" "]" --array
-  			   | primType
+  			   | int 
+               | boolean
+               | double
+               | char
+               | string
                | id
-  primType	 = "int" | "boolin" | "dublin" | "car" | "manyCars"
   CringeArray		 = "[" Args "]"
   Block      = "{" Statement+ "}"
   Call       = id ":" Args ":"
@@ -52,9 +55,14 @@ CringeMinusMinus {
   while      = "infiniteLoop" ~idchar
   true       = "based" ~idchar
   false      = "unbased" ~idchar
+  int        = "int" ~idchar
+  boolean    = "boolin" ~idchar
+  string     = "manyCars" ~idchar
+  char       = "car" ~idchar
+  double     = "dublin" ~idchar
   return 	 = "dab" ~idchar
   print	 	 = "retweet" ~idchar
-  keyword    =  while | true | false
+  keyword    =  while | true | false | num | string | char | double | boolean 
   num        = digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
   id         = ~keyword letter idchar*
   idchar     = letter | digit | "_"

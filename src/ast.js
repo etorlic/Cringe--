@@ -15,7 +15,7 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
     return new core.If(
       condition.ast(),
       block.ast(),
-      elseifs.asIteration().ast(),
+      null, //elseifs.asIteration().ast(),
       null // elseStatement.ast()
     )
   },
@@ -90,8 +90,8 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Type_array(type, _open, _close) {
     return new core.Type(type.ast())
   },
-  Type(id) {
-    return new id.ast()
+  Type(typename) {
+    return new core.Type(typename.ast())
   },
   CringeArray(_open, values, _close) {
     return new core.Array(values.asIteration().ast())

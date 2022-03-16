@@ -74,8 +74,8 @@ export class Call {
 }
 
 export class Type {
-  constructor(type) {
-    Object.assign(this, { type })
+  constructor(typename) {
+    Object.assign(this, { typename })
   }
 }
 
