@@ -94,7 +94,7 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
     return new core.Type(typename.ast())
   },
   CringeArray(_open, values, _close) {
-    return new core.Array(values.asIteration().ast())
+    return new core.CringeArray(values.asIteration().ast())
   },
   id(_first, _rest) {
     return new core.Token("Id", this.source)
