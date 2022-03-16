@@ -15,7 +15,7 @@ CringeMinusMinus {
   Exp1       = Exp2 ("&&" Exp2)+                        -- and
              | Exp2 ("||" Exp2)+                        -- or
              | Exp2
-  Exp2       = Exp3 ("<"|"<="|"="|"!="|">="|">") Exp3  -- binary
+  Exp2       = Exp3 ("<="|"<"|"="|"!="|">="|">") Exp3  -- binary
              | Exp3
   Exp3       = Exp3 ("+" | "-") Exp4                    -- binary
              | Exp4
