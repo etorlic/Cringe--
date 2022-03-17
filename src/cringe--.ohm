@@ -1,12 +1,12 @@
 CringeMinusMinus {
   Program = Statement+
     
-  Statement = Type id "==" Exp ";;" -- declaration
+  Statement = Type id "==" Exp ";;"                     -- declaration
   			| If
             | function Type id ":" Type id ":"  Block   -- fundec
-             | id "==" Exp ";;"                           -- assign
-             | Call ";;"                                 -- call
-             | while ":" Exp ":" Block                   -- while
+             | id "==" Exp ";;"                         -- assign
+             | Call ";;"                                -- call
+             | while ":" Exp ":" Block                  -- while
              | return Exp ";;" 	--return
              | print ":" Exp ":" ";;" --print
            
@@ -32,10 +32,10 @@ CringeMinusMinus {
              | id
 
              | CringeArray
-             | "\"" idchar* "\"" --string
+             | "\"" idchar* "\""                        -- string
              | ":" Exp ":"                              -- parens
-  Type	     = Type "[" "]" --array
-  			   | int 
+  Type	     = Type "[" "]"                             -- array
+  			       | int 
                | boolean
                | double
                | char

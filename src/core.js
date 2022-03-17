@@ -79,6 +79,12 @@ export class Type {
   }
 }
 
+export class ArrayType {
+  constructor(elementType) {
+    Object.assign(this, { elementType })
+  }
+}
+
 export class CringeArray {
   constructor(values) {
     Object.assign(this, { values })
