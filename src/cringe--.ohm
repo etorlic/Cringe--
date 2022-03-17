@@ -32,7 +32,7 @@ CringeMinusMinus {
              | id
 
              | CringeArray
-             | "\"" idchar* "\""                        -- string
+             | "\"" (~"\"" ~"\n" ~"\\" any)* "\""                        -- string
              | ":" Exp ":"                              -- parens
   Type	     = Type "[" "]"                             -- array
   			       | int 
