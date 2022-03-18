@@ -63,8 +63,23 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
     const operands = [left.ast(), ...right.ast()]
     return operands.reduce((x, y) => new core.BinaryExpression("&&", x, y))
   },
+  Exp1a_bitor(left, _ops, right) {
+    const operands = [left.ast(), ...right.ast()]
+    return operands.reduce((x, y) => new core.BinaryExpression("|", x, y))
+  },
+  Exp1a_bitxor(left, _ops, right) {
+    const operands = [left.ast(), ...right.ast()]
+    return operands.reduce((x, y) => new core.BinaryExpression("^", x, y))
+  },
+  Exp1a_bitand(left, _ops, right) {
+    const operands = [left.ast(), ...right.ast()]
+    return operands.reduce((x, y) => new core.BinaryExpression("&", x, y))
+  },
   Exp2_binary(left, op, right) {
     return new core.BinaryExpression(op.ast(), left.ast(), right.ast())
+  },
+  Exp2a_shift(left, op, right){
+    return new core.BinaryExpression(op.sourceString, left.ast(), right.ast())
   },
   Exp3_binary(left, op, right) {
     return new core.BinaryExpression(op.ast(), left.ast(), right.ast())

@@ -2,20 +2,26 @@ CringeMinusMinus {
   Program = Statement+
     
   Statement = Type id "==" Exp ";;"                     -- declaration
-  			| If
-            | function Type id ":" Type id ":"  Block   -- fundec
+  			     | If
+             | function Type id ":" Type id ":"  Block  -- fundec
              | id "==" Exp ";;"                         -- assign
              | Call ";;"                                -- call
              | while ":" Exp ":" Block                  -- while
-             | return Exp ";;" 	--return
-             | print ":" Exp ":" ";;" --print
+             | return Exp ";;" 	                        -- return
+             | print ":" Exp ":" ";;"                   -- print
            
-  Exp        = Exp1 "?" Exp1 ":" Exp                    -- condition
+  Exp        = Exp1 "?" Exp1 ":" Exp                   -- condition
              | Exp1
   Exp1       = Exp2 ("&&" Exp2)+                        -- and
              | Exp2 ("||" Exp2)+                        -- or
+             | Exp1a
+  Exp1a      = Exp2 ("|" Exp2)+                              --bitor
+             | Exp2 ("^" Exp2)+                              --bitxor
+             | Exp2 ("&" Exp2)+                              --bitand
              | Exp2
-  Exp2       = Exp3 ("<="|"<"|"="|"!="|">="|">") Exp3  -- binary
+  Exp2       = Exp3 ("<="|"<"|"="|"!="|">="|">") Exp2a  -- binary
+             | Exp2a
+  Exp2a      = Exp2a ("<<" | ">>") Exp3                 -- shift
              | Exp3
   Exp3       = Exp3 ("+" | "-") Exp4                    -- binary
              | Exp4
@@ -41,8 +47,9 @@ CringeMinusMinus {
                | char
                | string
                | id
+
   CringeArray		 = "[" Args "]"
-  Block      = "{" Statement+ "}"
+  Block      = "{" Statement* "}"
   Call       = id ":" Args ":"
   If = "vibeCheck" ":" Exp ":" Block ElseIf* Else?
   ElseIf = "recount" ":" Exp ":" Block 
@@ -66,5 +73,5 @@ CringeMinusMinus {
   num        = digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
   id         = ~keyword letter idchar*
   idchar     = letter | digit | "_"
-  space     += "//" (~"\n" any)* "\n"                   -- comment
+  space     += "//" (~"\n" any)* ("\n" | end)                   -- comment
 }
