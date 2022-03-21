@@ -6,13 +6,19 @@ import "./Home.css"
 
 import Card from "../../components/Card/Card"
 
-const Home = () => {
+const Home = (props) => {
+  const { cringeMode } = props
   const homeContent = assets.home
   return (
     <div className="Home">
       <div className="Home-content">
         {homeContent.map(([title, content], index) => (
-          <Card index={index} title={title} content={content} />
+          <Card
+            index={index}
+            title={title}
+            content={content}
+            cringeMode={cringeMode}
+          />
         ))}
       </div>
     </div>

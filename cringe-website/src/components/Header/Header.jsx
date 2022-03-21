@@ -17,6 +17,8 @@ const Header = (props) => {
         backgroundColor: cringeMode ? "#FF0000" : "#d7d6d6",
         fontWeight: cringeMode ? 700 : 100,
         color: cringeMode ? "#FFFF00" : "#000000",
+        borderBottomLeftRadius: cringeMode ? "0px" : "20px",
+        borderBottomRightRadius: cringeMode ? "0px" : "20px",
       }}
     >
       <div className="Header-large-screen">
@@ -30,6 +32,7 @@ const Header = (props) => {
               backgroundColor: cringeMode ? "#00FFFF" : "#EEEEEE",
               fontWeight: cringeMode ? 600 : 100,
               color: cringeMode ? "#FF0000" : "#000000",
+              borderRadius: cringeMode ? "0px" : "12px",
             }}
           >
             {buttonText}
