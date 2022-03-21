@@ -16,6 +16,25 @@
     display: flex;
     text-align: left;
     justify-content: left;
-    line-height: 1.3em;
+    line-height: 1.2em;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes spinX {
+  from {
+    transform: rotateX(0deg);
+  }
+
+  to {
+    transform: rotateX(360deg);
   }
 }

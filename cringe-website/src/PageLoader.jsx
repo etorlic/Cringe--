@@ -13,13 +13,11 @@ const PageLoader = () => {
   const [squares, setSquares] = useState([])
   const minSquares = 15
   const maxSquares = 25
-  const ANIMATIONS = [
-    "Square-spin infinite 1s reverse linear",
-    "Square-spin infinite 1s linear",
-    "none",
-  ]
 
   const handleCringeMode = () => {
+    if (!cringeMode) {
+      window.alert("You have activated Cringe Mode!")
+    }
     setCringeMode(!cringeMode)
   }
 
@@ -35,7 +33,6 @@ const PageLoader = () => {
         `${getRandomInt(7, 95)}vh`,
         `${getRandomInt(0, 95)}vw`,
         `rotate(${getRandomInt(0, 360)}deg)`,
-        ANIMATIONS[getRandomInt(0, ANIMATIONS.length)],
       ])
     )
   }, [])
@@ -60,7 +57,6 @@ const PageLoader = () => {
           top={arr[2]}
           left={arr[3]}
           transform={arr[4]}
-          animation={arr[5]}
         />
       ))}
       <Routes>
