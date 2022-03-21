@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/Cringe--/static/css/main.073c9b0a.css",
-    "main.js": "/Cringe--/static/js/main.837a91c3.js",
+    "main.css": "/Cringe--/static/css/main.f9af13ab.css",
+    "main.js": "/Cringe--/static/js/main.3d48ba59.js",
     "static/js/787.7965daaa.chunk.js": "/Cringe--/static/js/787.7965daaa.chunk.js",
-    "static/media/logo.svg": "/Cringe--/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "static/media/Cringe--Logo.png": "/Cringe--/static/media/Cringe--Logo.350a16c1568a2509eb15.png",
     "index.html": "/Cringe--/index.html",
-    "main.073c9b0a.css.map": "/Cringe--/static/css/main.073c9b0a.css.map",
-    "main.837a91c3.js.map": "/Cringe--/static/js/main.837a91c3.js.map",
+    "main.f9af13ab.css.map": "/Cringe--/static/css/main.f9af13ab.css.map",
+    "main.3d48ba59.js.map": "/Cringe--/static/js/main.3d48ba59.js.map",
     "787.7965daaa.chunk.js.map": "/Cringe--/static/js/787.7965daaa.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.073c9b0a.css",
-    "static/js/main.837a91c3.js"
+    "static/css/main.f9af13ab.css",
+    "static/js/main.3d48ba59.js"
   ]
 }
