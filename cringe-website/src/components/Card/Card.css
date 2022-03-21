@@ -1,0 +1,22 @@
+.Card {
+  padding: 1.5em;
+  border: 1px solid #d7d6d6;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(3px);
+}
+
+@media screen and (min-width: 768px) {
+  .Card-title {
+    font-size: 2em;
+  }
+
+  .Card-content {
+    margin-top: 1.5vh;
+    font-size: 0.9em;
+    display: flex;
+    text-align: left;
+    justify-content: left;
+    line-height: 1.3em;
+  }
+}

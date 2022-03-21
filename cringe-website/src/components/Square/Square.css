@@ -1,0 +1,30 @@
+.Square {
+  position: fixed;
+  border-style: solid;
+  background-color: transparent;
+  z-index: -1;
+}
+
+.Square-img {
+  position: fixed;
+  background-color: transparent;
+  z-index: -1;
+}
+
+@keyframes Square-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes Square-spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
