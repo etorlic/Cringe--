@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/Cringe--/static/css/main.b9f6a405.css",
-    "main.js": "/Cringe--/static/js/main.ffd37020.js",
+    "main.css": "/Cringe--/static/css/main.0ee2bf51.css",
+    "main.js": "/Cringe--/static/js/main.2ed1d2bb.js",
     "static/js/787.7965daaa.chunk.js": "/Cringe--/static/js/787.7965daaa.chunk.js",
     "static/media/Cringe--Logo.png": "/Cringe--/static/media/Cringe--Logo.350a16c1568a2509eb15.png",
     "index.html": "/Cringe--/index.html",
-    "main.b9f6a405.css.map": "/Cringe--/static/css/main.b9f6a405.css.map",
-    "main.ffd37020.js.map": "/Cringe--/static/js/main.ffd37020.js.map",
+    "main.0ee2bf51.css.map": "/Cringe--/static/css/main.0ee2bf51.css.map",
+    "main.2ed1d2bb.js.map": "/Cringe--/static/js/main.2ed1d2bb.js.map",
     "787.7965daaa.chunk.js.map": "/Cringe--/static/js/787.7965daaa.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b9f6a405.css",
-    "static/js/main.ffd37020.js"
+    "static/css/main.0ee2bf51.css",
+    "static/js/main.2ed1d2bb.js"
   ]
 }
