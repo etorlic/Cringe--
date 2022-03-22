@@ -13,7 +13,7 @@ const Header = (props) => {
     <div
       className="Header"
       style={{
-        fontFamily: cringeMode ? "Times New Roman" : "Droid Sans",
+        fontFamily: cringeMode ? "Times New Roman" : "",
         backgroundColor: cringeMode ? "#FF0000" : "#d7d6d6",
         fontWeight: cringeMode ? 700 : 100,
         color: cringeMode ? "#FFFF00" : "#000000",
