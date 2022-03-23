@@ -15,16 +15,16 @@ import Home from "./pages/Home/Home"
 const PageLoader = () => {
   const [cringeMode, setCringeMode] = useState(false)
   const [squares, setSquares] = useState([])
-  const bruh = new Audio(bruh_sound)
-  const amogus = new Audio(amogus_sound)
-  const minSquares = 15
-  const maxSquares = 25
+  const [bruh] = useState(new Audio(bruh_sound))
+  const [amogus] = useState(new Audio(amogus_sound))
+  const [minSquares] = useState(15)
+  const [maxSquares] = useState(25)
 
   const handleCringeMode = () => {
     if (!cringeMode) {
-      bruh.play()
-      window.alert("You have activated Cringe Mode!")
       amogus.play()
+      window.alert("You have activated Cringe Mode!")
+      bruh.play()
     }
     setCringeMode(!cringeMode)
   }
@@ -66,6 +66,7 @@ const PageLoader = () => {
           top={arr[2]}
           left={arr[3]}
           transform={arr[4]}
+          key={`Square-${arr[0]}${arr[2]}${arr[3]}`}
         />
       ))}
       <Routes>
