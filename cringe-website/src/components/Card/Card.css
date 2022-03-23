@@ -5,6 +5,7 @@
 @media screen and (min-width: 768px) {
   .Card-title {
     font-size: 2em;
+    user-select: none;
   }
 
   .Card-content {
@@ -14,6 +15,7 @@
     text-align: left;
     justify-content: left;
     line-height: 1.2em;
+    user-select: none;
   }
 }
 
