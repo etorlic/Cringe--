@@ -6,7 +6,7 @@
 }
 
 .Home-content {
-  margin-top: 9vh;
+  padding-top: 16vh;
   display: grid;
   grid-template-columns: 10% 24% 4% 24% 4% 24% 10%;
 }
