@@ -5,8 +5,19 @@ import { getRandomInt } from "../../assets/utils"
 import "./Card.css"
 
 const Card = (props) => {
-  const { title, content, index, cringeMode, link } = props
+  const { title, content, index, cringeMode } = props
   const [clicked, setClicked] = useState(false)
+
+  const getRandomLink = () => {
+    const LINKS = [
+      "https://youtu.be/wnhkbgq3mRI", // SUS Minecraft
+      "https://youtu.be/dQw4w9WgXcQ", // Rick Roll
+      "https://youtu.be/1KaecOQKNaM", // Among musical
+      "https://youtu.be/Gp9gFXf56yQ", // Dream Music Vid
+    ]
+
+    return LINKS[getRandomInt(0, LINKS.length)]
+  }
 
   const animateCardOnce = () => {
     const choice = getRandomInt(0, 2)
@@ -59,11 +70,9 @@ const Card = (props) => {
     return "none"
   }
 
-  console.log(link)
-
   return cringeMode ? (
     <div style={{ gridColumnStart: 2 * index + 2 }}>
-      <a href={link} target="_blank" className="Card-a">
+      <a href={getRandomLink()} target="_blank" className="Card-a">
         <div
           className="Card-cringe"
           style={{
