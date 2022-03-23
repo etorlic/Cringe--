@@ -7,7 +7,6 @@ import "./Card.css"
 const Card = (props) => {
   const { title, content, index, cringeMode } = props
   const [clicked, setClicked] = useState(false)
-  console.log(clicked)
 
   const animateCardOnce = () => {
     const choice = getRandomInt(0, 2)

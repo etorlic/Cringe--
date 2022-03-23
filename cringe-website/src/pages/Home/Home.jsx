@@ -18,6 +18,7 @@ const Home = (props) => {
             title={title}
             content={content}
             cringeMode={cringeMode}
+            key={`Home-${title}`}
           />
         ))}
       </div>
