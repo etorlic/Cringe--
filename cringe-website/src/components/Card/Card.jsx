@@ -5,7 +5,7 @@ import { getRandomInt } from "../../assets/utils"
 import "./Card.css"
 
 const Card = (props) => {
-  const { title, content, index, cringeMode } = props
+  const { title, content, index, cringeMode, link } = props
   const [clicked, setClicked] = useState(false)
 
   const animateCardOnce = () => {
@@ -59,47 +59,52 @@ const Card = (props) => {
     return "none"
   }
 
-  return (
+  console.log(link)
+
+  return cringeMode ? (
+    <div style={{ gridColumnStart: 2 * index + 2 }}>
+      <a href={link} target="_blank" className="Card-a">
+        <div
+          className="Card-cringe"
+          style={{
+            animation: getCardAnimation(),
+          }}
+        >
+          <div
+            className="Card-title"
+            style={{
+              animation: getTextAnimation(),
+            }}
+          >
+            {title}
+          </div>
+          <div
+            className="Card-content"
+            style={{
+              animation: getTextAnimation(),
+            }}
+          >
+            {content}
+          </div>
+        </div>
+      </a>
+    </div>
+  ) : (
     <div
       className="Card"
       style={{
-        color: cringeMode ? "#FF0000" : "",
         gridColumnStart: 2 * index + 2,
-        borderRadius: cringeMode ? "0px" : "20px",
         animation: getCardAnimation(),
-        border: cringeMode ? "3px solid #ff0000" : "1px solid #d7d6d6",
-        backgroundColor: cringeMode ? "#ffff00" : "rgba(255, 255, 255, 0.1)",
-        backdropFilter: cringeMode ? "none" : "blur(3px)",
-        cursor: cringeMode ? "default" : "pointer",
-        fontFamily: cringeMode ? "Times New Roman" : "",
       }}
       onClick={() => {
-        if (!cringeMode) {
-          setClicked(true)
-        }
+        setClicked(true)
       }}
       onAnimationEnd={() => {
-        if (!cringeMode) {
-          setClicked(false)
-        }
+        setClicked(false)
       }}
     >
-      <div
-        className="Card-title"
-        style={{
-          animation: cringeMode ? getTextAnimation() : "none",
-        }}
-      >
-        {title}
-      </div>
-      <div
-        className="Card-content"
-        style={{
-          animation: cringeMode ? getTextAnimation() : "none",
-        }}
-      >
-        {content}
-      </div>
+      <div className="Card-title">{title}</div>
+      <div className="Card-content">{content}</div>
     </div>
   )
 }
