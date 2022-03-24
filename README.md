@@ -1,4 +1,5 @@
-![alt text](./docs/Cringe--Logo.png)
+[![alt text](./docs/Cringe--Logo.png)](https://etorlic.github.io/Cringe--)<br>
+[https://etorlic.github.io/Cringe--](https://etorlic.github.io/Cringe--)
 # Cringe--
 Hi, I'm a Scorpio. 
 
