@@ -15,7 +15,7 @@
   }
 
   .Card {
-    width: 100%;
+    width: 80%;
     height: 100%;
     padding: 1.5em;
     cursor: pointer;
@@ -26,7 +26,7 @@
   }
 
   .Card-cringe {
-    width: 100%;
+    width: 80%;
     height: 100%;
     padding: 1.5em;
     color: #ff0000;
