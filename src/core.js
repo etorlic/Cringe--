@@ -74,6 +74,13 @@ export class Call {
 }
 
 export class Type {
+  // Type of all basic type int, float, string, etc. and superclass of others
+  static BOOLEAN = new Type("boolin")
+  static INT = new Type("int")
+  static DOUBLE = new Type("dublin")
+  static STRING = new Type("manyCars")
+  static CHAR = new Type("car")
+  static VOID = new Type("nada")
   constructor(typename) {
     Object.assign(this, { typename })
   }
@@ -122,8 +129,8 @@ export class Variable {
 }
 
 export class Function {
-  constructor(name, paramCount, readOnly) {
-    Object.assign(this, { name, paramCount, readOnly })
+  constructor(name, parameters, readOnly) {
+    Object.assign(this, { name, parameters, readOnly })
   }
 }
 
