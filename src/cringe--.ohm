@@ -2,7 +2,7 @@ CringeMinusMinus {
   Program = Statement+
     
   Statement = Type id "==" Exp ";;"                     -- declaration
-  			     | If
+  			 | If
              | function Type id ":" Type id ":"  Block  -- fundec
              | id "==" Exp ";;"                         -- assign
              | Call ";;"                                -- call
@@ -10,14 +10,14 @@ CringeMinusMinus {
              | return Exp ";;" 	                        -- return
              | print ":" Exp ":" ";;"                   -- print
            
-  Exp        = Exp1 "?" Exp1 ":" Exp                   -- condition
+  Exp        = Exp1 "?" Exp1 ":" Exp                    -- conditional
              | Exp1
   Exp1       = Exp2 ("&&" Exp2)+                        -- and
              | Exp2 ("||" Exp2)+                        -- or
              | Exp1a
-  Exp1a      = Exp2 ("|" Exp2)+                              --bitor
-             | Exp2 ("^" Exp2)+                              --bitxor
-             | Exp2 ("&" Exp2)+                              --bitand
+  Exp1a      = Exp2 ("|" Exp2)+                         --bitor
+             | Exp2 ("^" Exp2)+                         --bitxor
+             | Exp2 ("&" Exp2)+                         --bitand
              | Exp2
   Exp2       = Exp3 ("<="|"<"|"="|"!="|">="|">") Exp2a  -- binary
              | Exp2a
@@ -38,40 +38,40 @@ CringeMinusMinus {
              | id
 
              | CringeArray
-             | "\"" (~"\"" ~"\n" ~"\\" any)* "\""                        -- string
+             | "\"" (~"\"" ~"\n" ~"\\" any)* "\""       -- string
              | ":" Exp ":"                              -- parens
   Type	     = Type "[" "]"                             -- array
-  			       | int 
-               | boolean
-               | double
-               | char
-               | string
-               | id
+  			 | int 
+             | boolean
+             | double
+             | char
+             | string
+             | id
 
-  CringeArray		 = "[" Args "]"
-  Block      = "{" Statement* "}"
-  Call       = id ":" Args ":"
-  If = "vibeCheck" ":" Exp ":" Block ElseIf* Else?
-  ElseIf = "recount" ":" Exp ":" Block 
-  Else = "badVibes" Block
-  FuncParam  = Type id
-  ParamDec	 = ListOf<FuncParam, ","> --paramdec
-  Params     = ListOf<id, ",">
-  Args       = ListOf<Exp, ",">
-  function   = "flossin" ~idchar
-  while      = "infiniteLoop" ~idchar
-  true       = "based" ~idchar
-  false      = "unbased" ~idchar
-  int        = "int" ~idchar
-  boolean    = "boolin" ~idchar
-  string     = "manyCars" ~idchar
-  char       = "car" ~idchar
-  double     = "dublin" ~idchar
-  return 	 = "dab" ~idchar
-  print	 	 = "retweet" ~idchar
-  keyword    =  while | true | false | num | string | char | double | boolean 
-  num        = digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
-  id         = ~keyword letter idchar*
-  idchar     = letter | digit | "_"
-  space     += "//" (~"\n" any)* ("\n" | end)                   -- comment
+  CringeArray = "[" Args "]"
+  Block       = "{" Statement* "}"
+  Call        = id ":" Args ":"
+  If          = "vibeCheck" ":" Exp ":" Block ElseIf* Else?
+  ElseIf      = "recount" ":" Exp ":" Block 
+  Else        = "badVibes" Block
+  FuncParam   = Type id
+  ParamDec	  = ListOf<FuncParam, ","> --paramdec
+  Params      = ListOf<id, ",">
+  Args        = ListOf<Exp, ",">
+  function    = "flossin" ~idchar
+  while       = "infiniteLoop" ~idchar
+  true        = "based" ~idchar
+  false       = "unbased" ~idchar
+  int         = "int" ~idchar
+  boolean     = "boolin" ~idchar
+  string      = "manyCars" ~idchar
+  char        = "car" ~idchar
+  double      = "dublin" ~idchar
+  return 	  = "dab" ~idchar
+  print	 	  = "retweet" ~idchar
+  keyword     =  while | true | false | num | string | char | double | boolean | function
+  num         = digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
+  id          = ~keyword letter idchar*
+  idchar      = letter | digit | "_"
+  space       += "//" (~"\n" any)* ("\n" | end)         -- comment
 }

@@ -52,7 +52,7 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Block(_open, body, _close) {
     return body.ast()
   },
-  Exp_condition(test, _questionMark, consequent, _colon, alternate) {
+  Exp_conditional(test, _questionMark, consequent, _colon, alternate) {
     return new core.Conditional(test.ast(), consequent.ast(), alternate.ast())
   },
   Exp1_or(left, _ops, right) {
@@ -78,7 +78,7 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Exp2_binary(left, op, right) {
     return new core.BinaryExpression(op.ast(), left.ast(), right.ast())
   },
-  Exp2a_shift(left, op, right){
+  Exp2a_shift(left, op, right) {
     return new core.BinaryExpression(op.sourceString, left.ast(), right.ast())
   },
   Exp3_binary(left, op, right) {

@@ -19,6 +19,12 @@ export class VariableDeclaration {
   }
 }
 
+export class Conditional {
+  constructor(test, consequent, alternate) {
+    Object.assign(this, { test, consequent, alternate })
+  }
+}
+
 export class If {
   constructor(condition, block, elseifs, elseStatement) {
     Object.assign(this, { condition, block, elseifs, elseStatement })
