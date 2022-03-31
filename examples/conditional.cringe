@@ -1,4 +1,2 @@
 int x == 5;;
-vibeCheck :x=5: { 
-  retweet:x:;;
-}
+x == :based: ? 1 : 0;;

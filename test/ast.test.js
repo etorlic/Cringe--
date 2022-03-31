@@ -2,23 +2,27 @@ import assert from "assert/strict"
 import util from "util"
 import ast from "../src/ast.js"
 
-const source = `retweet:!1:;;int x == 5;;int x == 5;;vibeCheck :x=5: { retweet:x:;; }int x == 0;;infiniteLoop :x<10: { retweet:x:;;x == x + 1;;}flossin boolin exampleFunction:boolin vibe: { dab vibe;; }`
+const source = `boolean x == true;;x == !x;;vibeCheck :x=5: { retweet:x:;; }recount :x=6: { retweet:x:;; }badVibes{ retweet:x:;; }int x == 0;;infiniteLoop :x<10: { retweet:x:;;x == x + 1;;}flossin boolin exampleFunction:boolin vibe: { dab vibe;; }`
 
-const expected = `   1 | Program statements=[#2,#4,#5,#6,#9,#10,#15]
-   2 | Call callee=(Id,"retweet") args=[#3]
-   3 | BinaryExpression op=(Sym,"!") left=(Num,"1") right=undefined
-   4 | VariableDeclaration type=(Sym,"int") variable=(Id,"x") initializer=(Num,"5")
-   5 | VariableDeclaration type=(Sym,"int") variable=(Id,"x") initializer=(Num,"5")
-   6 | If condition=#7 block=[#8] elseifs=null elseStatement=null
-   7 | BinaryExpression op=(Sym,"=") left=(Id,"x") right=(Num,"5")
-   8 | Call callee=(Id,"retweet") args=[(Id,"x")]
-   9 | VariableDeclaration type=(Sym,"int") variable=(Id,"x") initializer=(Num,"0")
-  10 | WhileStatement test=#11 body=[#12,#13]
-  11 | BinaryExpression op=(Sym,"<") left=(Id,"x") right=(Num,"10")
-  12 | Call callee=(Id,"retweet") args=[(Id,"x")]
-  13 | Assignment target=(Id,"x") source=#14
-  14 | BinaryExpression op=(Sym,"+") left=(Id,"x") right=(Num,"1")
-  15 | FunctionDeclaration type=(Sym,"boolin") id=(Id,"exampleFunction") params=(Sym,"boolin") body=(Id,"vibe")`
+const expected = `   1 | Program statements=[#2,#3,#5,#13,#14,#19]
+   2 | VariableDeclaration type=(Id,"boolean") variable=(Id,"x") initializer=(Id,"true")
+   3 | Assignment target=(Id,"x") source=#4
+   4 | UnaryExpression op=(Sym,"!") operand=(Id,"x")
+   5 | If condition=#6 block=[#7] elseifs=[#8] elseStatement=#11
+   6 | BinaryExpression op=(Sym,"=") left=(Id,"x") right=(Num,"5")
+   7 | PrintStatement argument=(Id,"x")
+   8 | ElseIf condition=#9 block=[#10]
+   9 | BinaryExpression op=(Sym,"=") left=(Id,"x") right=(Num,"6")
+  10 | PrintStatement argument=(Id,"x")
+  11 | Else block=[#12]
+  12 | PrintStatement argument=(Id,"x")
+  13 | VariableDeclaration type=(Id,"int") variable=(Id,"x") initializer=(Num,"0")
+  14 | WhileStatement test=#15 body=[#16,#17]
+  15 | BinaryExpression op=(Sym,"<") left=(Id,"x") right=(Num,"10")
+  16 | PrintStatement argument=(Id,"x")
+  17 | Assignment target=(Id,"x") source=#18
+  18 | BinaryExpression op=(Sym,"+") left=(Id,"x") right=(Num,"1")
+  19 | FunctionDeclaration type=(Sym,"boolin") id=(Id,"exampleFunction") params=(Sym,"boolin") body=(Id,"vibe")`
 
 describe("The AST generator", () => {
   it("produces the expected AST for all node types", () => {

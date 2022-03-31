@@ -5,16 +5,10 @@ import ast from "../src/ast.js"
 const syntaxChecks = [
   ["a simple string literal", 'retweet:"Hello, World!":;;'],
   ["variable declarations", "int x == 5;;"],
-  [
-    "function with one param",
-    "flossin boolin exampleFunction:boolin x: { dab based;; }",
-  ],
+  ["function with one param", "flossin boolin f:boolin x: { dab based;; }"],
   ["if", "vibeCheck :x=5: {dab x;;}"],
   ["else", "vibeCheck :x=5: {dab based;;} badVibes {dab unbased;;}"],
-  [
-    "elseif",
-    "vibeCheck :x=5: {dab x;;}recount :x=6:{dab based;;} badVibes {dab unbased;;}",
-  ],
+  ["elseif", "vibeCheck:x=5:{dab x;;}recount:x=6:{dab based;;}"],
   ["a simple While", "infiniteLoop :x<=5: {dab based;;}"],
   ["boolean literals", "boolin x == based || unbased;;"],
   ["declare characters variables", "car a == r;;"],
@@ -29,20 +23,15 @@ const syntaxChecks = [
   ["while with empty block", "infiniteLoop :based: {}"],
   ["while with one statement block", "infiniteLoop :based: { int x == 1;; }"],
   ["nonempty array literal", "retweet:[1, 2, 3]:;;"],
-  [
-    "all numeric literal forms",
-    "retweet:8 * 89.123 * 1.3E5 * 1.3E+5 * 1.3E-5:;;",
-  ],
+  ["all numeric literal forms", "retweet:8*89.123*1.3E5*1.3E+5*1.3E-5:;;"],
   ["relational operators", "retweet:1<2||1<=2||1=2||1!=2||1>=2||1>2:;;"],
   ["bitwise ops", "dab :1|2|3: + :4^5^6: + :7&8&9:;;"],
   ["ands can be chained", "retweet:1 && 2 && 3 && 4 && 5:;;"],
   ["ors can be chained", "retweet:1 || 2 || 3 || 4 || 5:;;"],
+  ["unary op", "boolean x == true;;x == !x;;"],
   ["call in exp", "retweet:5 * f:4::;;"],
   ["call in statement", "int x == 1;;\nf:100:;;\nretweet:1:;;"],
-  [
-    "array type for param",
-    "flossin int[] exampleFunction:int[] arr: { dab arr;; }",
-  ],
+  ["array type for param", "flossin int[] f:int[] arr: { dab arr;; }"],
   ["multiple statements", "retweet:1:;;\nnx==5;;\ndab 4;;"],
 ]
 
@@ -50,11 +39,7 @@ const syntaxChecks = [
 const syntaxErrors = [
   ["non-letter in an identifier", "int ab😭c = 2;;", /Line 1, col 7:/],
   ["malformed number", "int x == 2.;;", /Line 1, col 12:/],
-  [
-    "a float with an E but no exponent",
-    "int x == 5E * 11;;",
-    /Line 1, col 12:/,
-  ],
+  ["a float with an E but no exponent", "int x == 5E*11;;", /Line 1, col 12:/],
   ["a missing right operand", "int x == 5 - ;;", /Line 1, col 14:/],
   ["a non-operator", "retweet:7 * ::2 _ 3::;;", /Line 1, col 17:/],
   ["an expression starting with a :", "dab :;;", /Line 1, col 6:/],
@@ -64,16 +49,8 @@ const syntaxErrors = [
   ["an expression starting with a *", "int x == * 71;;", /Line 1, col 10:/],
   ["mixing ands and ors", "retweet:1 && 2 || 3:;;", /Line 1, col 16:/],
   ["mixing ors and ands", "retweet:1 || 2 && 3:;;", /Line 1, col 16:/],
-  [
-    "associating relational operators",
-    "retweet:1 < 2 < 3:;;",
-    /Line 1, col 15:/,
-  ],
-  [
-    "while without braces",
-    "infiniteLoop based { retweet:1:;; }",
-    /Line 1, col 14/,
-  ],
+  ["associating relational operators", "retweet:1<2<3:;;", /Line 1, col 12:/],
+  ["while without braces", "infiniteLoop based {dab:2:;;}", /Line 1, col 14/],
   ["if without braces", "vibeCheck 4 = 4 { }", /Line 1, col 11/],
   ["unbalanced brackets", "flossin f::, int[;;", /Line 1, col 10/],
   ["empty array without type", "[] v == [];;", /Line 1, col 1/],

@@ -15,8 +15,8 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
     return new core.If(
       condition.ast(),
       block.ast(),
-      null, //elseifs.asIteration().ast(),
-      null // elseStatement.ast()
+      elseifs.ast(),
+      elseStatement.ast()[0] ?? null
     )
   },
   ElseIf(_recount, _open, condition, _close, block) {
@@ -91,7 +91,7 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
     return new core.BinaryExpression(op.ast(), left.ast(), right.ast())
   },
   Exp6_unary(op, operand) {
-    return new core.BinaryExpression(op.ast(), operand.ast())
+    return new core.UnaryExpression(op.ast(), operand.ast())
   },
   Exp7_parens(_open, expression, _close) {
     return expression.ast()
@@ -130,7 +130,6 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
 
 export default function ast(sourceCode) {
   const match = cringeMMGrammar.match(sourceCode)
-  console.log(match.succeeded())
   if (!match.succeeded()) core.error(match.message)
   return astBuilder(match).ast()
 }

@@ -1,0 +1,8 @@
+boolin isBased == unbased;;
+vibeCheck:isBased: {
+  retweet:vibeCheck:;;
+} recount:isBased: {
+  retweet:"recount1":;;
+} badVibes {
+  retweet:badVibes:;;
+}
