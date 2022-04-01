@@ -92,6 +92,10 @@ export class Type {
   }
 }
 
+export class BreakStatement {
+  // Intentionally empty
+}
+
 export class ArrayType {
   constructor(elementType) {
     Object.assign(this, { elementType })

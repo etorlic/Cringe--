@@ -6,6 +6,7 @@ CringeMinusMinus {
              | function Type id ":" Type id ":"  Block  -- fundec
              | id "==" Exp ";;"                         -- assign
              | Call ";;"                                -- call
+             | break ";;"                                --break
              | while ":" Exp ":" Block                  -- while
              | return Exp ";;" 	                        -- return
              | print ":" Exp ":" ";;"                   -- print
@@ -60,6 +61,7 @@ CringeMinusMinus {
   Args        = ListOf<Exp, ",">
   function    = "flossin" ~idchar
   while       = "infiniteLoop" ~idchar
+  break       = "break" ~alnum
   true        = "based" ~idchar
   false       = "unbased" ~idchar
   int         = "pog" ~idchar
@@ -69,7 +71,7 @@ CringeMinusMinus {
   double      = "dublin" ~idchar
   return 	  = "dab" ~idchar
   print	 	  = "retweet" ~idchar
-  keyword     =  while | true | false | num | string | char | double | boolean | function | print
+  keyword     =  while | true | false | num | string | char | double | boolean | function | print | break
   num         = digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
   id          = ~keyword letter idchar*
   idchar      = letter | digit | "_"

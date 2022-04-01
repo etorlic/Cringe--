@@ -272,25 +272,16 @@ import {
       checkIsAType(d.variable.value.type)
       this.add(d.variable.lexeme, d.variable.value)
     }
-    // TypeDeclaration(d) {
-    //   // Add early to allow recursion
-    //   this.add(d.type.description, d.type)
-    //   this.analyze(d.type.fields)
-    //   checkFieldsAllDistinct(d.type.fields)
-    //   checkNotRecursive(d.type)
-    // }
-    // Field(f) {
-    //   this.analyze(f.type)
-    //   if (f.type instanceof Token) f.type = f.type.value
-    //   checkIsAType(f.type)
-    // }
-    // FunctionDeclaration(d) {
-    //   if (d.type) this.analyze(d.type)
-    //   d.fun.value = new Function(
-    //     d.fun.lexeme,
-    //     d.parameters,
-    //     d.returnType?.value ?? d.returnType ?? Type.VOID
-    //   )
+    
+    FunctionDeclaration(d) {
+      this.analyze(d.body)
+      //TODO: Decide if we want read only variables
+      d.variable.value.params = new Params(d.params.lexeme)
+      d.variable.value.id = new Id(d.id.lexeme)
+      d.variable.value.id.type = new Type(d.type.lexeme, false)
+      checkIsAType(d.id.type.params)
+      this.add(d.variable.lexeme, d.variable.value)
+    }
     //   checkIsAType(d.fun.value.returnType)
     //   // When entering a function body, we must reset the inLoop setting,
     //   // because it is possible to declare a function inside a loop!
@@ -304,15 +295,9 @@ import {
     //   this.add(d.fun.lexeme, d.fun.value)
     //   childContext.analyze(d.body)
     // }
-    // Parameter(p) {
-    //   this.analyze(p.type)
-    //   if (p.type instanceof Token) p.type = p.type.value
-    //   checkIsAType(p.type)
-    //   this.add(p.name.lexeme, p)
-    // }
     // ArrayType(t) {
-    //   this.analyze(t.baseType)
-    //   if (t.baseType instanceof Token) t.baseType = t.baseType.value
+    //   this.analyze(t.elementType)
+    //   if (t.elementType instanceof Token) t.elementType = t.elementType.value
     // }
     // FunctionType(t) {
     //   this.analyze(t.paramTypes)
@@ -324,60 +309,48 @@ import {
     //   this.analyze(t.baseType)
     //   if (t.baseType instanceof Token) t.baseType = t.baseType.value
     // }
-    // Increment(s) {
-    //   this.analyze(s.variable)
-    //   checkInteger(s.variable)
-    // }
-    // Decrement(s) {
-    //   this.analyze(s.variable)
-    //   checkInteger(s.variable)
-    // }
-    // Assignment(s) {
-    //   this.analyze(s.source)
-    //   this.analyze(s.target)
-    //   checkAssignable(s.source, { toType: s.target.type })
-    //   checkNotReadOnly(s.target)
-    // }
-    // BreakStatement(s) {
-    //   checkInLoop(this)
-    // }
-    // ReturnStatement(s) {
-    //   checkInFunction(this)
-    //   checkReturnsSomething(this.function)
-    //   this.analyze(s.expression)
-    //   checkReturnable({ expression: s.expression, from: this.function })
-    // }
+
+    Assignment(s) {
+      s.source = this.analyze(s.source)
+      s.target = this.analyze(s.target)
+      check(s.source).isAssignableTo(s.target.type)
+      check(s.target).isNotReadOnly()
+      return s
+    }
+    ReturnStatement(s) {
+      checkInFunction(this)
+      this.analyze(s.value)
+      this.add({ expression: s.value, from: this.function })
+    }
     // ShortReturnStatement(s) {
     //   checkInFunction(this)
     //   checkReturnsNothing(this.function)
     // }
-    // IfStatement(s) {
-    //   this.analyze(s.test)
-    //   checkBoolean(s.test)
-    //   this.newChildContext().analyze(s.consequent)
-    //   if (s.alternate.constructor === Array) {
-    //     // It's a block of statements, make a new context
-    //     this.newChildContext().analyze(s.alternate)
-    //   } else if (s.alternate) {
-    //     // It's a trailing if-statement, so same context
-    //     this.analyze(s.alternate)
-    //   }
-    // }
-    // ShortIfStatement(s) {
-    //   this.analyze(s.test)
-    //   checkBoolean(s.test)
-    //   this.newChildContext().analyze(s.consequent)
-    // }
-    // WhileStatement(s) {
-    //   this.analyze(s.test)
-    //   checkBoolean(s.test)
-    //   this.newChildContext({ inLoop: true }).analyze(s.body)
-    // }
-    // RepeatStatement(s) {
-    //   this.analyze(s.count)
-    //   checkInteger(s.count)
-    //   this.newChildContext({ inLoop: true }).analyze(s.body)
-    // }
+    If(s) {
+      this.analyze(s.condition)
+      checkBoolean(s.condition)
+      this.newChildContext().analyze(s.block)
+      if (s.elseifs.constructor === Array) {
+        // It's a block of statements, make a new context
+        this.newChildContext().analyze(s.elseifs)
+      } else if (s.aelseifs) {
+        // It's a trailing if-statement, so same context
+        this.newChildContext().analyze(s.elseStatement)
+      }else if (s.elseStatement){
+        this.analyze(s.elseStatement)
+      }
+    }
+    ElseIf(s) {
+      this.analyze(s.condition)
+      checkBoolean(s.condition)
+      this.newChildContext().analyze(s.block)
+    }
+    WhileStatement(s) {
+      s.test = this.analyze(s.test)
+      check(s.test).isBoolean()
+      s.body = this.newChild({ inLoop: true }).analyze(s.body)
+    }
+
     // ForRangeStatement(s) {
     //   this.analyze(s.low)
     //   checkInteger(s.low)
@@ -385,15 +358,6 @@ import {
     //   checkInteger(s.high)
     //   s.iterator = new Variable(s.iterator.lexeme, true)
     //   s.iterator.type = Type.INT
-    //   const bodyContext = this.newChildContext({ inLoop: true })
-    //   bodyContext.add(s.iterator.name, s.iterator)
-    //   bodyContext.analyze(s.body)
-    // }
-    // ForStatement(s) {
-    //   this.analyze(s.collection)
-    //   checkArray(s.collection)
-    //   s.iterator = new Variable(s.iterator.lexeme, true)
-    //   s.iterator.type = s.collection.type.baseType
     //   const bodyContext = this.newChildContext({ inLoop: true })
     //   bodyContext.add(s.iterator.name, s.iterator)
     //   bodyContext.analyze(s.body)
@@ -454,44 +418,30 @@ import {
     //     e.type = new OptionalType(e.operand.type?.value ?? e.operand.type)
     //   }
     // }
-    // EmptyOptional(e) {
-    //   this.analyze(e.baseType)
-    //   e.type = new OptionalType(e.baseType?.value ?? e.baseType)
-    // }
     // SubscriptExpression(e) {
     //   this.analyze(e.array)
     //   e.type = e.array.type.baseType
     //   this.analyze(e.index)
     //   checkInteger(e.index)
     // }
-    // ArrayExpression(a) {
-    //   this.analyze(a.elements)
-    //   checkAllHaveSameType(a.elements)
-    //   a.type = new ArrayType(a.elements[0].type)
-    // }
-    // EmptyArray(e) {
-    //   this.analyze(e.baseType)
-    //   e.type = new ArrayType(e.baseType?.value ?? e.baseType)
-    // }
-    // MemberExpression(e) {
-    //   this.analyze(e.object)
-    //   checkMemberDeclared(e.field.lexeme, { in: e.object })
-    //   e.field = e.object.type.fields.find(f => f.name.lexeme === e.field.lexeme)
-    //   e.type = e.field.type
-    // }
-    // Call(c) {
-    //   this.analyze(c.callee)
-    //   const callee = c.callee?.value ?? c.callee
-    //   checkCallable(callee)
-    //   this.analyze(c.args)
-    //   if (callee.constructor === StructType) {
-    //     checkConstructorArguments(c.args, callee)
-    //     c.type = callee
-    //   } else {
-    //     checkFunctionCallArguments(c.args, callee.type)
-    //     c.type = callee.type.returnType
-    //   }
-    // }
+    CringeArray(a) {
+      this.analyze(a.value)
+      checkAllHaveSameType(a.value)
+      a.type = new ArrayType(a.value[0].type)
+    }
+    Call(c) {
+      this.analyze(c.callee)
+      const callee = c.callee?.value ?? c.callee
+      checkCallable(callee)
+      this.analyze(c.args)
+      if (callee.constructor === StructType) {
+        checkConstructorArguments(c.args, callee)
+        c.type = callee
+      } else {
+        checkFunctionCallArguments(c.args, callee.type)
+        c.type = callee.type.returnType
+      }
+    }
     Token(t) {
       // For ids being used, not defined
       if (t.category === "Id") {

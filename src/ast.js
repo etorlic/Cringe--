@@ -40,6 +40,9 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Statement_while(_while, _open, exp, _close, block) {
     return new core.WhileStatement(exp.ast(), block.ast())
   },
+  Statement_break(_break, _semicolon) {
+    return new core.BreakStatement()
+  },
   Statement_return(_return, exp, _semicolon) {
     return new core.ReturnStatement(exp.ast())
   },
