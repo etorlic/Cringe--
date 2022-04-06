@@ -1,13 +1,15 @@
-import React from "react"
+import React from "react";
 
-import "./Header.css"
+import "./Header.css";
 
 const Header = (props) => {
-  const { cringeMode, handleCringeMode } = props
+  const { cringeMode, handleCringeMode, page, handlePageChange } = props;
+
+  const switcherText = page === "Home" ? "See Examples" : "Back to Home";
 
   const buttonText = cringeMode
     ? "Deactivate Cringe Mode"
-    : "Activate Cringe Mode"
+    : "Activate Cringe Mode";
 
   return (
     <div
@@ -22,6 +24,21 @@ const Header = (props) => {
       }}
     >
       <div className="Header-large-screen">
+        <div className="Header-page-switch">
+          <button
+            className="Header-button"
+            onClick={handlePageChange}
+            style={{
+              fontFamily: cringeMode ? "Times New Roman" : "Consolas",
+              backgroundColor: cringeMode ? "#00FFFF" : "#EEEEEE",
+              fontWeight: cringeMode ? 600 : 100,
+              color: cringeMode ? "#FF0000" : "#000000",
+              borderRadius: cringeMode ? "0px" : "12px",
+            }}
+          >
+            {switcherText}
+          </button>
+        </div>
         <div className="Header-title">Cringe--</div>
         <div className="Header-button-grid">
           <button
@@ -40,7 +57,7 @@ const Header = (props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

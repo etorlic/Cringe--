@@ -27,6 +27,13 @@
     justify-content: center;
   }
 
+  .Header-page-switch {
+    grid-column-start: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .Header-button-grid {
     grid-column-start: 6;
     display: flex;

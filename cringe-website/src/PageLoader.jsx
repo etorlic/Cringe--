@@ -1,33 +1,49 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 
-import { getRandomInt } from "./assets/utils"
+import { getRandomInt } from "./assets/utils";
 
-import { Routes, Route } from "react-router-dom"
+import amogus_img from "./assets/sussy_amogus.png";
+import bruh_sound from "./assets/bruh_sound_effect.mp3";
+import amogus_sound from "./assets/among_us.mp3";
 
-import amogus_img from "./assets/sussy_amogus.png"
-import bruh_sound from "./assets/bruh_sound_effect.mp3"
-import amogus_sound from "./assets/among_us.mp3"
-
-import Square from "./components/Square/Square"
-import Header from "./components/Header/Header"
-import Home from "./pages/Home/Home"
+import Square from "./components/Square/Square";
+import Header from "./components/Header/Header";
+import Home from "./pages/Home/Home";
+import Examples from "./pages/Examples/Examples";
 
 const PageLoader = () => {
-  const [cringeMode, setCringeMode] = useState(false)
-  const [squares, setSquares] = useState([])
-  const [bruh] = useState(new Audio(bruh_sound))
-  const [amogus] = useState(new Audio(amogus_sound))
-  const [minSquares] = useState(15)
-  const [maxSquares] = useState(25)
+  const [cringeMode, setCringeMode] = useState(false);
+  const [route, setRoute] = useState("Examples");
+  const [squares, setSquares] = useState([]);
+  const [bruh] = useState(new Audio(bruh_sound));
+  const [amogus] = useState(new Audio(amogus_sound));
+  const [minSquares] = useState(15);
+  const [maxSquares] = useState(25);
 
   const handleCringeMode = () => {
     if (!cringeMode) {
-      amogus.play()
-      window.alert("You have activated Cringe Mode!")
-      bruh.play()
+      amogus.play();
+      window.alert("You have activated Cringe Mode!");
+      bruh.play();
     }
-    setCringeMode(!cringeMode)
-  }
+    setCringeMode(!cringeMode);
+  };
+
+  const handleChangeRoute = () => {
+    if (route === "Home") {
+      setRoute("Examples");
+    } else {
+      setRoute("Home");
+    }
+  };
+
+  const getPageToRender = () => {
+    if (route === "Home") {
+      return <Home cringeMode={cringeMode} />;
+    } else {
+      return <Examples cringeMode={cringeMode} />;
+    }
+  };
 
   useEffect(() => {
     setSquares(
@@ -42,8 +58,8 @@ const PageLoader = () => {
         `${getRandomInt(0, 95)}vw`,
         `rotate(${getRandomInt(0, 360)}deg)`,
       ])
-    )
-  }, [])
+    );
+  }, []);
 
   return (
     <div>
@@ -55,8 +71,15 @@ const PageLoader = () => {
             : "linear-gradient(to bottom right, #5200FF, #aa0070)",
         }}
       />
-      {cringeMode ? <img src={amogus_img} className="App-sussy" /> : null}
-      <Header cringeMode={cringeMode} handleCringeMode={handleCringeMode} />
+      {cringeMode ? (
+        <img src={amogus_img} className="App-sussy" alt="sussy" />
+      ) : null}
+      <Header
+        cringeMode={cringeMode}
+        handleCringeMode={handleCringeMode}
+        page={route}
+        handlePageChange={handleChangeRoute}
+      />
       {squares.map((arr) => (
         <Square
           dim={arr[0]}
@@ -69,15 +92,9 @@ const PageLoader = () => {
           key={`Square-${arr[0]}${arr[2]}${arr[3]}`}
         />
       ))}
-      <Routes>
-        <Route
-          exact
-          path="/Cringe--"
-          element={<Home cringeMode={cringeMode} />}
-        />
-      </Routes>
+      {getPageToRender()}
     </div>
-  )
-}
+  );
+};
 
-export default PageLoader
+export default PageLoader;
