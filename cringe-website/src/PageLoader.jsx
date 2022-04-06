@@ -13,7 +13,7 @@ import Examples from "./pages/Examples/Examples";
 
 const PageLoader = () => {
   const [cringeMode, setCringeMode] = useState(false);
-  const [route, setRoute] = useState("Examples");
+  const [route, setRoute] = useState("Home");
   const [squares, setSquares] = useState([]);
   const [bruh] = useState(new Audio(bruh_sound));
   const [amogus] = useState(new Audio(amogus_sound));
