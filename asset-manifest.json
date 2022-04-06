@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/Cringe--/static/css/main.35136c3c.css",
-    "main.js": "/Cringe--/static/js/main.8f6b3274.js",
+    "main.css": "/Cringe--/static/css/main.d32f2e8f.css",
+    "main.js": "/Cringe--/static/js/main.5f672ae8.js",
     "static/js/787.7965daaa.chunk.js": "/Cringe--/static/js/787.7965daaa.chunk.js",
     "static/media/sussy_amogus.png": "/Cringe--/static/media/sussy_amogus.e7a3cf464c6a515518de.png",
     "static/media/among_us.mp3": "/Cringe--/static/media/among_us.9597f500b6037aa8c4d0.mp3",
     "static/media/Cringe--Logo.png": "/Cringe--/static/media/Cringe--Logo.350a16c1568a2509eb15.png",
     "static/media/bruh_sound_effect.mp3": "/Cringe--/static/media/bruh_sound_effect.e024fd6ab0fa87377fe6.mp3",
     "index.html": "/Cringe--/index.html",
-    "main.35136c3c.css.map": "/Cringe--/static/css/main.35136c3c.css.map",
-    "main.8f6b3274.js.map": "/Cringe--/static/js/main.8f6b3274.js.map",
+    "main.d32f2e8f.css.map": "/Cringe--/static/css/main.d32f2e8f.css.map",
+    "main.5f672ae8.js.map": "/Cringe--/static/js/main.5f672ae8.js.map",
     "787.7965daaa.chunk.js.map": "/Cringe--/static/js/787.7965daaa.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.35136c3c.css",
-    "static/js/main.8f6b3274.js"
+    "static/css/main.d32f2e8f.css",
+    "static/js/main.5f672ae8.js"
   ]
 }
