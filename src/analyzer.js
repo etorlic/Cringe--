@@ -44,7 +44,7 @@ import {
   Object.assign(Type.prototype, {
     // Equivalence: when are two types the same
     isEquivalentTo(target) {
-      return this == target
+      return this.typename == target.typename
     },
     // T1 assignable to T2 is when x:T1 can be assigned to y:T2. By default
     // this is only when two types are equivalent; however, for other kinds
@@ -111,6 +111,7 @@ import {
   }
   
   function checkType(e, types, expectation) {
+    console.log("checking type for ", e, types, expectation)
     check(types.includes(e.type), `Expected ${expectation}`)
   }
   
@@ -163,7 +164,7 @@ import {
   function checkAssignable(e, { toType: type }) {
     check(
       type === Type.ANY || e.type.isAssignableTo(type),
-      `Cannot assign a ${e.type.description} to a ${type.description}`
+      `Cannot assign a ${e.type.typename} to a ${type.typename}`
     )
   }
   
@@ -257,23 +258,29 @@ import {
       return new Context({ ...this, parent: this, locals: new Map(), ...props })
     }
     analyze(node) {
-       console.log("node = ", node)
-       console.log(node.constructor.name)
-      return this[node.constructor.name](node)
+      //  console.log("node = ", node)
+      //console.log("old node = ", node)
+      let newNode = this[node.constructor.name](node)
+     // console.log("new node = ", newNode)
+      return newNode
     }
     Program(p) {
       this.analyze(p.statements)
     }
     VariableDeclaration(d) {
       this.analyze(d.initializer)
+      //console.log(" in variable dec for ", d)
       //TODO: Decide if we want read only variables
       d.variable.value = new Variable(d.variable.lexeme, false)
+    //  console.log("new variable value = ", d.variable.value)
       d.variable.value.type = new Type(d.type.lexeme)
       checkIsAType(d.variable.value.type)
       this.add(d.variable.lexeme, d.variable.value)
     }
     
+    //TODO: Figure out how we are handling multiple parameters
     FunctionDeclaration(d) {
+      console.log(d)
       this.analyze(d.body)
       //TODO: Decide if we want read only variables
       d.variable.value.params = new Params(d.params.lexeme)
@@ -311,10 +318,17 @@ import {
     // }
 
     Assignment(s) {
-      s.source = this.analyze(s.source)
-      s.target = this.analyze(s.target)
-      check(s.source).isAssignableTo(s.target.type)
-      check(s.target).isNotReadOnly()
+      // console.log("about to analyze s *********")
+      // console.log("source = ", s.source)
+      this.analyze(s.source)
+      //console.log("source now = ", s.source)
+      this.analyze(s.target)
+      //console.log("in assignment, s = ", s.target)
+      checkAssignable(s.source, { toType: s.target.type })
+      checkNotReadOnly(s.target)
+      //check(s.source).isAssignableTo(s.target.type)
+
+     // check(s.target).isNotReadOnly()
       return s
     }
     ReturnStatement(s) {
@@ -328,12 +342,13 @@ import {
     // }
     If(s) {
       this.analyze(s.condition)
+      console.log(s.condition)
       checkBoolean(s.condition)
       this.newChildContext().analyze(s.block)
       if (s.elseifs.constructor === Array) {
         // It's a block of statements, make a new context
         this.newChildContext().analyze(s.elseifs)
-      } else if (s.aelseifs) {
+      } else if (s.elseifs) {
         // It's a trailing if-statement, so same context
         this.newChildContext().analyze(s.elseStatement)
       }else if (s.elseStatement){
@@ -445,13 +460,16 @@ import {
     Token(t) {
       // For ids being used, not defined
       if (t.category === "Id") {
+       // console.log(" in token assignment for ", t)
         t.value = this.lookup(t.lexeme)
+      //  console.log("t.value now = ", t.value)
         t.type = t.value.type
       }
       if (t.category === "Int") [t.value, t.type] = [BigInt(t.lexeme), Type.INT]
       if (t.category === "Float") [t.value, t.type] = [Number(t.lexeme), Type.FLOAT]
       if (t.category === "Str") [t.value, t.type] = [t.lexeme, Type.STRING]
       if (t.category === "Bool") [t.value, t.type] = [t.lexeme === "true", Type.BOOLEAN]
+     // console.log("t at the end", t)
     }
     Array(a) {
       a.forEach(item => this.analyze(item))
