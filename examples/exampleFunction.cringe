@@ -1,4 +1,12 @@
-//Check if the parameter vibe is true, and if so, return true. Otherwise return false. 
-flossin boolin exampleFunction:boolin vibe: { 
-  dab vibe;;
+flossin boolin f:int x, int y: {
+	vibeCheck:x < y: {
+    	dab based;;
+    } badVibes {
+    	dab unbased;;
+    }
 }
+
+int x == 5;;
+int y == 3;;
+
+f:x,y:;;

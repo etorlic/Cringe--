@@ -49,6 +49,12 @@ export class FunctionDeclaration {
   }
 }
 
+export class FuncParam {
+  constructor(type, id) {
+    Object.assign(this, { type, id })
+  }
+}
+
 export class Assignment {
   constructor(target, source) {
     Object.assign(this, { target, source })

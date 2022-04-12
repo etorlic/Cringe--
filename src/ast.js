@@ -25,14 +25,16 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Else(_badVibes, block) {
     return new core.Else(block.ast())
   },
-  Statement_fundec(_fun, type, id, _open, paramType, paramId, _close, block) {
+  Statement_fundec(_fun, type, id, _open, params, _close, block) {
     return new core.FunctionDeclaration(
       type.ast(),
       id.ast(),
-      paramType.ast(),
-      paramId.ast(),
+      params.asIteration().ast(),
       block.ast()
     )
+  },
+  FuncParam(type, id) {
+    return new core.FuncParam(type.ast(), id.ast())
   },
   Statement_assign(id, _eq, expression, _semicolon) {
     return new core.Assignment(id.ast(), expression.ast())

@@ -3,7 +3,7 @@ CringeMinusMinus {
     
   Statement = Type id "==" Exp ";;"                     -- declaration
   			 | If
-             | function Type id ":" Type id ":"  Block  -- fundec
+             | function Type id ":" ParamDec ":"  Block  -- fundec
              | id "==" Exp ";;"                         -- assign
              | Call ";;"                                -- call
              | break ";;"                                --break
