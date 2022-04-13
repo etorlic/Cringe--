@@ -101,9 +101,17 @@ export class BreakStatement {
   // Intentionally empty
 }
 
-export class ArrayType {
+export class ArrayType extends Type {
   constructor(elementType) {
-    Object.assign(this, { elementType })
+    if (elementType instanceof Type) {
+      //handles array types constructed via declaration, ex: dublin[]
+      super(`[${elementType.typename}]`)
+      Object.assign(this, { elementType })
+    } else {
+      //handles array types constructed through an expression, ex: [1,2,3]
+      super(`[${elementType.lexeme}]`)
+      Object.assign(this, { elementType })
+    }
   }
 }
 

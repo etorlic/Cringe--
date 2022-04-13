@@ -2,7 +2,7 @@ CringeMinusMinus {
   Program = Statement+
     
   Statement = Type id "==" Exp ";;"                     -- declaration
-  			 | If
+  			     | If
              | function Type id ":" ParamDec ":"  Block  -- fundec
              | id "==" Exp ";;"                         -- assign
              | Call ";;"                                -- call

@@ -1,8 +1,8 @@
 boolin isBased == unbased;;
 vibeCheck:isBased: {
-  retweet:vibeCheck:;;
+  retweet:"goodVibes":;;
 } recount:isBased: {
-  retweet:"recount1":;;
+  retweet:"recount":;;
 } badVibes {
-  retweet:badVibes:;;
+  retweet:"badVibes":;;
 }

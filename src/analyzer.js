@@ -44,7 +44,6 @@ import {
   Object.assign(Type.prototype, {
     // Equivalence: when are two types the same
     isEquivalentTo(target) {
-      console.log(this, target, this == target)
       return this == target
     },
     // T1 assignable to T2 is when x:T1 can be assigned to y:T2. By default
@@ -61,7 +60,7 @@ import {
     isEquivalentTo(target) {
       // [T] equivalent to [U] only when T is equivalent to U.
       return (
-        target.constructor === ArrayType && this.baseType.isEquivalentTo(target.baseType)
+        target.constructor === ArrayType && this.elementType.isEquivalentTo(target.elementType)
       )
     },
     isAssignableTo(target) {
@@ -112,7 +111,6 @@ import {
   }
   
   function checkType(e, types, expectation) {
-    console.log("checking type for ", e, types, expectation)
     check(types.includes(e.type), `Expected ${expectation}`)
   }
   
@@ -261,6 +259,7 @@ import {
     analyze(node) {
       //  console.log("node = ", node)
       //console.log("old node = ", node)
+     // console.log(node)
       let newNode = this[node.constructor.name](node)
      // console.log("new node = ", newNode)
       return newNode
@@ -281,7 +280,6 @@ import {
     
     //TODO: Figure out how we are handling multiple parameters
     FunctionDeclaration(d) {
-      console.log(d)
       this.analyze(d.body)
       //TODO: Decide if we want read only variables
       d.variable.value.params = new Params(d.params.lexeme)
@@ -303,10 +301,10 @@ import {
     //   this.add(d.fun.lexeme, d.fun.value)
     //   childContext.analyze(d.body)
     // }
-    // ArrayType(t) {
-    //   this.analyze(t.elementType)
-    //   if (t.elementType instanceof Token) t.elementType = t.elementType.value
-    // }
+    ArrayType(t) {
+      this.analyze(t.elementType)
+      if (t.elementType instanceof Token) t.elementType = t.elementType.value
+    }
     // FunctionType(t) {
     //   this.analyze(t.paramTypes)
     //   t.paramTypes = t.paramTypes.map(p => (p instanceof Token ? p.value : p))
@@ -337,13 +335,11 @@ import {
       this.analyze(s.value)
       this.add({ expression: s.value, from: this.function })
     }
-    // ShortReturnStatement(s) {
-    //   checkInFunction(this)
-    //   checkReturnsNothing(this.function)
-    // }
+    PrintStatement(s) {
+      this.analyze(s.argument)
+    }
     If(s) {
       this.analyze(s.condition)
-      console.log(s.condition)
       checkBoolean(s.condition)
       this.newChildContext().analyze(s.block)
       if (s.elseifs.constructor === Array) {
@@ -441,9 +437,9 @@ import {
     //   checkInteger(e.index)
     // }
     CringeArray(a) {
-      this.analyze(a.value)
-      checkAllHaveSameType(a.value)
-      a.type = new ArrayType(a.value[0].type)
+      this.analyze(a.values)
+      checkAllHaveSameType(a.values)
+      a.type = new ArrayType(a.values[0].type)
     }
     Call(c) {
       this.analyze(c.callee)
@@ -461,9 +457,7 @@ import {
     Token(t) {
       // For ids being used, not defined
       if (t.category === "Id") {
-       // console.log(" in token assignment for ", t)
         t.value = this.lookup(t.lexeme)
-      //  console.log("t.value now = ", t.value)
         t.type = t.value.type
       }
       if (t.category === "Int") [t.value, t.type] = [BigInt(t.lexeme), Type.INT]
