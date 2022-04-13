@@ -44,7 +44,8 @@ import {
   Object.assign(Type.prototype, {
     // Equivalence: when are two types the same
     isEquivalentTo(target) {
-      return this.typename == target.typename
+      console.log(this, target, this == target)
+      return this == target
     },
     // T1 assignable to T2 is when x:T1 can be assigned to y:T2. By default
     // this is only when two types are equivalent; however, for other kinds
@@ -273,7 +274,7 @@ import {
       //TODO: Decide if we want read only variables
       d.variable.value = new Variable(d.variable.lexeme, false)
     //  console.log("new variable value = ", d.variable.value)
-      d.variable.value.type = new Type(d.type.lexeme)
+      d.variable.value.type = d.initializer.type
       checkIsAType(d.variable.value.type)
       this.add(d.variable.lexeme, d.variable.value)
     }
@@ -466,10 +467,9 @@ import {
         t.type = t.value.type
       }
       if (t.category === "Int") [t.value, t.type] = [BigInt(t.lexeme), Type.INT]
-      if (t.category === "Float") [t.value, t.type] = [Number(t.lexeme), Type.FLOAT]
-      if (t.category === "Str") [t.value, t.type] = [t.lexeme, Type.STRING]
+      if (t.category === "Double") [t.value, t.type] = [Number(t.lexeme), Type.DOUBLE]
+      if (t.category === "String") [t.value, t.type] = [t.lexeme, Type.STRING]
       if (t.category === "Bool") [t.value, t.type] = [t.lexeme === "true", Type.BOOLEAN]
-     // console.log("t at the end", t)
     }
     Array(a) {
       a.forEach(item => this.analyze(item))

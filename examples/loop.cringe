@@ -1,4 +1,4 @@
-int x == 0;;
+pog x == 0;;
 infiniteLoop :x<10: { 
   retweet:x:;;
   x == x + 1;;

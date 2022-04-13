@@ -88,10 +88,9 @@ export class Call {
 export class Type {
   // Type of all basic type int, float, string, etc. and superclass of others
   static BOOLEAN = new Type("boolin")
-  static INT = new Type("int")
+  static INT = new Type("pog")
   static DOUBLE = new Type("dublin")
   static STRING = new Type("manyCars")
-  static CHAR = new Type("car")
   static VOID = new Type("nada")
   constructor(typename) {
     Object.assign(this, { typename })
@@ -123,6 +122,20 @@ export class BinaryExpression {
 export class UnaryExpression {
   constructor(op, operand) {
     Object.assign(this, { op, operand })
+  }
+}
+
+export class SubscriptExpression {
+  // Example: a[20]
+  constructor(array, index) {
+    Object.assign(this, { array, index })
+  }
+}
+
+export class MemberExpression {
+  // Example: state.population
+  constructor(object, field) {
+    Object.assign(this, { object, field })
   }
 }
 

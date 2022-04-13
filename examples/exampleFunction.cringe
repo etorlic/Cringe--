@@ -1,4 +1,4 @@
-flossin boolin f:int x, int y: {
+flossin boolin f:pog x, pog y: {
 	vibeCheck:x < y: {
     	dab based;;
     } badVibes {
@@ -6,7 +6,7 @@ flossin boolin f:int x, int y: {
     }
 }
 
-int x == 5;;
-int y == 3;;
+pog x == 5;;
+pog y == 3;;
 
 f:x,y:;;

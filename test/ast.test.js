@@ -9,20 +9,23 @@ const expected = `   1 | Program statements=[#2,#3,#5,#13,#14,#19]
    3 | Assignment target=(Id,"x") source=#4
    4 | UnaryExpression op=(Sym,"!") operand=(Id,"x")
    5 | If condition=#6 block=[#7] elseifs=[#8] elseStatement=#11
-   6 | BinaryExpression op=(Sym,"=") left=(Id,"x") right=(Num,"5")
+   6 | BinaryExpression op=(Sym,"=") left=(Id,"x") right=(Int,"5")
    7 | PrintStatement argument=(Id,"x")
    8 | ElseIf condition=#9 block=[#10]
-   9 | BinaryExpression op=(Sym,"=") left=(Id,"x") right=(Num,"6")
+   9 | BinaryExpression op=(Sym,"=") left=(Id,"x") right=(Int,"6")
   10 | PrintStatement argument=(Id,"x")
   11 | Else block=[#12]
   12 | PrintStatement argument=(Id,"x")
-  13 | VariableDeclaration type=(Id,"int") variable=(Id,"x") initializer=(Num,"0")
+  13 | VariableDeclaration type=(Id,"int") variable=(Id,"x") initializer=(Int,"0")
   14 | WhileStatement test=#15 body=[#16,#17]
-  15 | BinaryExpression op=(Sym,"<") left=(Id,"x") right=(Num,"10")
+  15 | BinaryExpression op=(Sym,"<") left=(Id,"x") right=(Int,"10")
   16 | PrintStatement argument=(Id,"x")
   17 | Assignment target=(Id,"x") source=#18
-  18 | BinaryExpression op=(Sym,"+") left=(Id,"x") right=(Num,"1")
-  19 | FunctionDeclaration type=(Sym,"boolin") id=(Id,"exampleFunction") params=(Sym,"boolin") body=(Id,"vibe")`
+  18 | BinaryExpression op=(Sym,"+") left=(Id,"x") right=(Int,"1")
+  19 | FunctionDeclaration type=(Sym,"boolin") id=(Id,"exampleFunction") params=[#20] body=[#21]
+  20 | FuncParam type=(Sym,"boolin") id=(Id,"vibe")
+  21 | ReturnStatement value=(Id,"vibe")`
+
 
 describe("The AST generator", () => {
   it("produces the expected AST for all node types", () => {

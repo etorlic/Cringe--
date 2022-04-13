@@ -101,8 +101,11 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Exp7_parens(_open, expression, _close) {
     return expression.ast()
   },
-  Exp7_string(_openQuote, _string, _closeQuote) {
-    return new core.Token("String", this.source)
+  Exp7_subscript(array, _left, subscript, _right) {
+    return new core.SubscriptExpression(array.ast(), subscript.ast())
+  },
+  Exp7_member(object, _dot, field) {
+    return new core.MemberExpression(object.ast(), field.ast())
   },
   Call(id, _left, args, _right) {
     return new core.Call(id.ast(), args.asIteration().ast())
@@ -122,8 +125,17 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   false(_) {
     return new core.Token("Bool", this.source)
   },
-  num(_whole, _point, _fraction, _e, _sign, _exponent) {
-    return new core.Token("Num", this.source)
+  // num(_whole, _point, _fraction, _e, _sign, _exponent) {
+  //   return new core.Token("Num", this.source)
+  // },
+  intlit(_digits) {
+    return new core.Token("Int", this.source)
+  },
+  doublelit(_whole, _point, _fraction, _e, _sign, _exponent) {
+    return new core.Token("Double", this.source)
+  },
+  stringlit(_openQuote, _chars, _closeQuote) {
+    return new core.Token("String", this.source)
   },
   _terminal() {
     return new core.Token("Sym", this.source)

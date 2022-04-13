@@ -1,2 +1,2 @@
- int[] emptyList == [];;
- int[][] nonEmptyList == [[1,2],[3,4]];;
+ pog[] emptyList == [];;
+ pog[][] nonEmptyList == [[1,2],[3,4]];;

@@ -32,20 +32,23 @@ CringeMinusMinus {
              | Exp6
   Exp6       = ("!" | "-") Exp6                         -- unary
              | Exp7
-  Exp7       = num
+  Exp7       = 
              | true
              | false
+             | doublelit
+             | intlit 
              | Call
+             | Exp7 ("[" | "?[") Exp "]"                     --subscript
+             | Exp7 ("." | "?.") id                          --member
+             | stringlit
              | id
              | CringeArray
-             | "\"" (~"\"" ~"\n" ~"\\" any)* "\""       -- string
              | ":" Exp ":"                              -- parens
              
   Type	     = Type "[" "]"                             -- array
-  			 | int 
+  			     | int 
              | boolean
              | double
-             | char
              | string
              | id
 
@@ -59,6 +62,14 @@ CringeMinusMinus {
   ParamDec	  = ListOf<FuncParam, ","> --paramdec
   Params      = ListOf<id, ",">
   Args        = ListOf<Exp, ",">
+  intlit      = digit+
+  doublelit   = digit+ "." digit+ (("E" | "e") ("+" | "-")? digit+)?
+  stringlit   = "\"" char* "\""
+  char        = ~control ~"\\" ~"\"" any
+              | "\\" ("n" | "t" | "\"" | "\\")                --escape
+              | "\\u{" hex hex? hex? hex? hex? hex? "}"       --codepoint
+  control     = "\x00".."\x1f" | "\x80".."\x9f"
+  hex         = hexDigit
   function    = "flossin" ~idchar
   while       = "infiniteLoop" ~idchar
   break       = "break" ~alnum
@@ -67,11 +78,10 @@ CringeMinusMinus {
   int         = "pog" ~idchar
   boolean     = "boolin" ~idchar
   string      = "manyCars" ~idchar
-  char        = "car" ~idchar
   double      = "dublin" ~idchar
-  return 	  = "dab" ~idchar
-  print	 	  = "retweet" ~idchar
-  keyword     =  while | true | false | num | string | char | double | boolean | function | print | break
+  return 	    = "dab" ~idchar
+  print	 	    = "retweet" ~idchar
+  keyword     =  while | true | false | int | string | double | boolean | function | print | break
   num         = digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
   id          = ~keyword letter idchar*
   idchar      = letter | digit | "_"
