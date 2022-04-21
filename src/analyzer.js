@@ -357,11 +357,13 @@ import {
       checkBoolean(s.condition)
       this.newChildContext().analyze(s.block)
     }
+
     WhileStatement(s) {
-      s.test = this.analyze(s.test)
-      check(s.test).isBoolean()
-      s.body = this.newChild({ inLoop: true }).analyze(s.body)
+      this.analyze(s.test)
+      checkBoolean(s.test)
+      this.newChildContext({ inLoop: true }).analyze(s.body)
     }
+
 
     // ForRangeStatement(s) {
     //   this.analyze(s.low)
@@ -374,68 +376,68 @@ import {
     //   bodyContext.add(s.iterator.name, s.iterator)
     //   bodyContext.analyze(s.body)
     // }
-    // Conditional(e) {
-    //   this.analyze(e.test)
-    //   checkBoolean(e.test)
-    //   this.analyze(e.consequent)
-    //   this.analyze(e.alternate)
-    //   checkHaveSameType(e.consequent, e.alternate)
-    //   e.type = e.consequent.type
-    // }
-    // BinaryExpression(e) {
-    //   this.analyze(e.left)
-    //   this.analyze(e.right)
-    //   if (["&", "|", "^", "<<", ">>"].includes(e.op.lexeme)) {
-    //     checkInteger(e.left)
-    //     checkInteger(e.right)
-    //     e.type = Type.INT
-    //   } else if (["+"].includes(e.op.lexeme)) {
-    //     checkNumericOrString(e.left)
-    //     checkHaveSameType(e.left, e.right)
-    //     e.type = e.left.type
-    //   } else if (["-", "*", "/", "%", "**"].includes(e.op.lexeme)) {
-    //     checkNumeric(e.left)
-    //     checkHaveSameType(e.left, e.right)
-    //     e.type = e.left.type
-    //   } else if (["<", "<=", ">", ">="].includes(e.op.lexeme)) {
-    //     checkNumericOrString(e.left)
-    //     checkHaveSameType(e.left, e.right)
-    //     e.type = Type.BOOLEAN
-    //   } else if (["==", "!="].includes(e.op.lexeme)) {
-    //     checkHaveSameType(e.left, e.right)
-    //     e.type = Type.BOOLEAN
-    //   } else if (["&&", "||"].includes(e.op.lexeme)) {
-    //     checkBoolean(e.left)
-    //     checkBoolean(e.right)
-    //     e.type = Type.BOOLEAN
-    //   } else if (["??"].includes(e.op.lexeme)) {
-    //     checkIsAnOptional(e.left)
-    //     checkAssignable(e.right, { toType: e.left.type.baseType })
-    //     e.type = e.left.type
-    //   }
-    // }
-    // UnaryExpression(e) {
-    //   this.analyze(e.operand)
-    //   if (e.op.lexeme === "#") {
-    //     checkArray(e.operand)
-    //     e.type = Type.INT
-    //   } else if (e.op.lexeme === "-") {
-    //     checkNumeric(e.operand)
-    //     e.type = e.operand.type
-    //   } else if (e.op.lexeme === "!") {
-    //     checkBoolean(e.operand)
-    //     e.type = Type.BOOLEAN
-    //   } else {
-    //     // Operator is "some"
-    //     e.type = new OptionalType(e.operand.type?.value ?? e.operand.type)
-    //   }
-    // }
-    // SubscriptExpression(e) {
-    //   this.analyze(e.array)
-    //   e.type = e.array.type.baseType
-    //   this.analyze(e.index)
-    //   checkInteger(e.index)
-    // }
+    Conditional(e) {
+      this.analyze(e.test)
+      checkBoolean(e.test)
+      this.analyze(e.consequent)
+      this.analyze(e.alternate)
+      checkHaveSameType(e.consequent, e.alternate)
+      e.type = e.consequent.type
+    }
+    BinaryExpression(e) {
+      this.analyze(e.left)
+      this.analyze(e.right)
+      if (["&", "|", "^", "<<", ">>"].includes(e.op.lexeme)) {
+        checkInteger(e.left)
+        checkInteger(e.right)
+        e.type = Type.INT
+      } else if (["+"].includes(e.op.lexeme)) {
+        checkNumericOrString(e.left)
+        checkHaveSameType(e.left, e.right)
+        e.type = e.left.type
+      } else if (["-", "*", "/", "%", "**"].includes(e.op.lexeme)) {
+        checkNumeric(e.left)
+        checkHaveSameType(e.left, e.right)
+        e.type = e.left.type
+      } else if (["<", "<=", ">", ">="].includes(e.op.lexeme)) {
+        checkNumericOrString(e.left)
+        checkHaveSameType(e.left, e.right)
+        e.type = Type.BOOLEAN
+      } else if (["==", "!="].includes(e.op.lexeme)) {
+        checkHaveSameType(e.left, e.right)
+        e.type = Type.BOOLEAN
+      } else if (["&&", "||"].includes(e.op.lexeme)) {
+        checkBoolean(e.left)
+        checkBoolean(e.right)
+        e.type = Type.BOOLEAN
+      } else if (["??"].includes(e.op.lexeme)) {
+        checkIsAnOptional(e.left)
+        checkAssignable(e.right, { toType: e.left.type.baseType })
+        e.type = e.left.type
+      }
+    }
+    UnaryExpression(e) {
+      this.analyze(e.operand)
+      if (e.op.lexeme === "#") {
+        checkArray(e.operand)
+        e.type = Type.INT
+      } else if (e.op.lexeme === "-") {
+        checkNumeric(e.operand)
+        e.type = e.operand.type
+      } else if (e.op.lexeme === "!") {
+        checkBoolean(e.operand)
+        e.type = Type.BOOLEAN
+      } else {
+        // Operator is "some"
+        e.type = new OptionalType(e.operand.type?.value ?? e.operand.type)
+      }
+    }
+    SubscriptExpression(e) {
+      this.analyze(e.array)
+      e.type = e.array.type.baseType
+      this.analyze(e.index)
+      checkInteger(e.index)
+    }
     CringeArray(a) {
       this.analyze(a.values)
       checkAllHaveSameType(a.values)
