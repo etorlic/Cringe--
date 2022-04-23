@@ -182,7 +182,7 @@ export class Function {
 export class FunctionType extends Type {
   // Example: (boolean,[string]?)->float
   constructor(paramTypes, returnType) {
-    super(`(${paramTypes.map(t => t.description).join(",")})->${returnType.description}`)
+    super(`(${paramTypes.map(t => t.typename).join(",")})->${returnType.typename}`)
     Object.assign(this, { paramTypes, returnType })
   }
 }

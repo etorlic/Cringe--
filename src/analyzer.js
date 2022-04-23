@@ -30,7 +30,6 @@ import {
     FunctionType,
     ArrayType,
     StructType,
-   // OptionalType,
     Function,
     Token,
     error,
@@ -69,38 +68,25 @@ import {
     },
   })
   
-//   Object.assign(FunctionType.prototype, {
-//     isEquivalentTo(target) {
-//       return (
-//         target.constructor === FunctionType &&
-//         this.returnType.isEquivalentTo(target.returnType) &&
-//         this.paramTypes.length === target.paramTypes.length &&
-//         this.paramTypes.every((t, i) => target.paramTypes[i].isEquivalentTo(t))
-//       )
-//     },
-//     isAssignableTo(target) {
-//       // Functions are covariant on return types, contravariant on parameters.
-//       return (
-//         target.constructor === FunctionType &&
-//         this.returnType.isAssignableTo(target.returnType) &&
-//         this.paramTypes.length === target.paramTypes.length &&
-//         this.paramTypes.every((t, i) => target.paramTypes[i].isAssignableTo(t))
-//       )
-//     },
-//   })
-  
-//   Object.assign(OptionalType.prototype, {
-//     isEquivalentTo(target) {
-//       // T? equivalent to U? only when T is equivalent to U.
-//       return (
-//         target.constructor === OptionalType && this.baseType.isEquivalentTo(target.baseType)
-//       )
-//     },
-//     isAssignableTo(target) {
-//       // Optionals are INVARIANT in Carlos!
-//       return this.isEquivalentTo(target)
-//     },
-//   })
+  Object.assign(FunctionType.prototype, {
+    isEquivalentTo(target) {
+      return (
+        target.constructor === FunctionType &&
+        this.returnType.isEquivalentTo(target.returnType) &&
+        this.paramTypes.length === target.paramTypes.length &&
+        this.paramTypes.every((t, i) => target.paramTypes[i].isEquivalentTo(t))
+      )
+    },
+    isAssignableTo(target) {
+      // Functions are covariant on return types, contravariant on parameters.
+      return (
+        target.constructor === FunctionType &&
+        this.returnType.isAssignableTo(target.returnType) &&
+        this.paramTypes.length === target.paramTypes.length &&
+        this.paramTypes.every((t, i) => target.paramTypes[i].isAssignableTo(t))
+      )
+    },
+  })
   
   /**************************
    *  VALIDATION FUNCTIONS  *
@@ -192,8 +178,6 @@ import {
   }
 
   function checkReturnsCorrectType(context, returnValue) {
-    console.log("context.function", context.function.type.returnType)
-    console.log("return valkue = ", returnValue.type)
     check(context.function.type.returnType.isEquivalentTo(returnValue.type), "Return type does not match declared function type")
   }
   
@@ -263,11 +247,7 @@ import {
       return new Context({ ...this, parent: this, locals: new Map(), ...props })
     }
     analyze(node) {
-      //  console.log("node = ", node)
-      //console.log("old node = ", node)
-      console.log("node name", node.constructor.name)
       let newNode = this[node.constructor.name](node)
-     // console.log("new node = ", newNode)
       return newNode
     }
     Program(p) {
@@ -275,10 +255,8 @@ import {
     }
     VariableDeclaration(d) {
       this.analyze(d.initializer)
-      //console.log(" in variable dec for ", d)
       //TODO: Decide if we want read only variables
       d.variable.value = new Variable(d.variable.lexeme)
-    //  console.log("new variable value = ", d.variable.value)
       d.variable.value.type = d.initializer.type
       checkIsAType(d.variable.value.type)
       this.add(d.variable.lexeme, d.variable.value)
@@ -296,7 +274,6 @@ import {
       // When entering a function body, we must reset the inLoop setting,
       // because it is possible to declare a function inside a loop!
       const childContext = this.newChildContext({ inLoop: false, function: d.value })
-      console.log(d.value.params)
       childContext.analyze(d.value.params)
       d.value.type = new FunctionType(
         d.value.params.map(p => p.type),
@@ -331,10 +308,13 @@ import {
       checkNotReadOnly(s.target)
       return s
     }
+    BreakStatement(s) {
+      checkInLoop(this)
+
+    }
     ReturnStatement(s) {
       checkInFunction(this)
       this.analyze(s.value)
-      console.log("s.val = ", s.value)
       checkReturnsCorrectType(this, s.value)
       this.add({ expression: s.value, from: this.function })
     }
