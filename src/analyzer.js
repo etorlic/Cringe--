@@ -27,9 +27,9 @@
 import {
     Variable,
     Type,
-   // FunctionType,
+    FunctionType,
     ArrayType,
-    //StructType,
+    StructType,
    // OptionalType,
     Function,
     Token,
@@ -190,6 +190,12 @@ import {
   function checkInFunction(context) {
     check(context.function, "Return can only appear in a function")
   }
+
+  function checkReturnsCorrectType(context, returnValue) {
+    console.log("context.function", context.function.type.returnType)
+    console.log("return valkue = ", returnValue.type)
+    check(context.function.type.returnType.isEquivalentTo(returnValue.type), "Return type does not match declared function type")
+  }
   
   function checkCallable(e) {
     check(
@@ -259,7 +265,7 @@ import {
     analyze(node) {
       //  console.log("node = ", node)
       //console.log("old node = ", node)
-     // console.log(node)
+      console.log("node name", node.constructor.name)
       let newNode = this[node.constructor.name](node)
      // console.log("new node = ", newNode)
       return newNode
@@ -271,68 +277,65 @@ import {
       this.analyze(d.initializer)
       //console.log(" in variable dec for ", d)
       //TODO: Decide if we want read only variables
-      d.variable.value = new Variable(d.variable.lexeme, false)
+      d.variable.value = new Variable(d.variable.lexeme)
     //  console.log("new variable value = ", d.variable.value)
       d.variable.value.type = d.initializer.type
       checkIsAType(d.variable.value.type)
       this.add(d.variable.lexeme, d.variable.value)
     }
-    
-    //TODO: Figure out how we are handling multiple parameters
     FunctionDeclaration(d) {
-      this.analyze(d.body)
-      //TODO: Decide if we want read only variables
-      d.variable.value.params = new Params(d.params.lexeme)
-      d.variable.value.id = new Id(d.id.lexeme)
-      d.variable.value.id.type = new Type(d.type.lexeme, false)
-      checkIsAType(d.id.type.params)
-      this.add(d.variable.lexeme, d.variable.value)
+      this.analyze(d.type)
+
+      d.value = new Function(
+        d.id,
+        d.params,
+        d.type
+      )
+      checkIsAType(d.value.type)
+
+      // When entering a function body, we must reset the inLoop setting,
+      // because it is possible to declare a function inside a loop!
+      const childContext = this.newChildContext({ inLoop: false, function: d.value })
+      console.log(d.value.params)
+      childContext.analyze(d.value.params)
+      d.value.type = new FunctionType(
+        d.value.params.map(p => p.type),
+        d.value.type
+      )
+      // Add before analyzing the body to allow recursion
+      this.add(d.id.lexeme, d.value)
+      childContext.analyze(d.block)
     }
-    //   checkIsAType(d.fun.value.returnType)
-    //   // When entering a function body, we must reset the inLoop setting,
-    //   // because it is possible to declare a function inside a loop!
-    //   const childContext = this.newChildContext({ inLoop: false, function: d.fun.value })
-    //   childContext.analyze(d.fun.value.parameters)
-    //   d.fun.value.type = new FunctionType(
-    //     d.fun.value.parameters.map(p => p.type),
-    //     d.fun.value.returnType
-    //   )
-    //   // Add before analyzing the body to allow recursion
-    //   this.add(d.fun.lexeme, d.fun.value)
-    //   childContext.analyze(d.body)
-    // }
+    FuncParam(p) {
+      this.analyze(p.type)
+      if (p.type instanceof Token) p.type = p.type.value
+      checkIsAType(p.type)
+      this.add(p.id.lexeme, p)
+    }
+    Type(t) {
+      checkIsAType(t)
+    }
     ArrayType(t) {
       this.analyze(t.elementType)
       if (t.elementType instanceof Token) t.elementType = t.elementType.value
     }
-    // FunctionType(t) {
-    //   this.analyze(t.paramTypes)
-    //   t.paramTypes = t.paramTypes.map(p => (p instanceof Token ? p.value : p))
-    //   this.analyze(t.returnType)
-    //   if (t.returnType instanceof Token) t.returnType = t.returnType.value
-    // }
-    // OptionalType(t) {
-    //   this.analyze(t.baseType)
-    //   if (t.baseType instanceof Token) t.baseType = t.baseType.value
-    // }
+    OptionalType(t) {
+      this.analyze(t.baseType)
+      if (t.baseType instanceof Token) t.baseType = t.baseType.value
+    }
 
     Assignment(s) {
-      // console.log("about to analyze s *********")
-      // console.log("source = ", s.source)
       this.analyze(s.source)
-      //console.log("source now = ", s.source)
       this.analyze(s.target)
-      //console.log("in assignment, s = ", s.target)
       checkAssignable(s.source, { toType: s.target.type })
       checkNotReadOnly(s.target)
-      //check(s.source).isAssignableTo(s.target.type)
-
-     // check(s.target).isNotReadOnly()
       return s
     }
     ReturnStatement(s) {
       checkInFunction(this)
       this.analyze(s.value)
+      console.log("s.val = ", s.value)
+      checkReturnsCorrectType(this, s.value)
       this.add({ expression: s.value, from: this.function })
     }
     PrintStatement(s) {
@@ -363,19 +366,6 @@ import {
       checkBoolean(s.test)
       this.newChildContext({ inLoop: true }).analyze(s.body)
     }
-
-
-    // ForRangeStatement(s) {
-    //   this.analyze(s.low)
-    //   checkInteger(s.low)
-    //   this.analyze(s.high)
-    //   checkInteger(s.high)
-    //   s.iterator = new Variable(s.iterator.lexeme, true)
-    //   s.iterator.type = Type.INT
-    //   const bodyContext = this.newChildContext({ inLoop: true })
-    //   bodyContext.add(s.iterator.name, s.iterator)
-    //   bodyContext.analyze(s.body)
-    // }
     Conditional(e) {
       this.analyze(e.test)
       checkBoolean(e.test)

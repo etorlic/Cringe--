@@ -116,8 +116,17 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   CringeArray(_open, values, _close) {
     return new core.CringeArray(values.asIteration().ast())
   },
-  id(_first, _rest) {
-    return new core.Token("Id", this.source)
+  int(_) {
+    return core.Type.INT
+  },
+  string(_) {
+    return core.Type.STRING
+  },
+  double(_) {
+    return core.Type.DOUBLE
+  },
+  boolean(_) {
+    return core.Type.BOOLEAN
   },
   true(_) {
     return new core.Token("Bool", this.source)
@@ -125,9 +134,9 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   false(_) {
     return new core.Token("Bool", this.source)
   },
-  // num(_whole, _point, _fraction, _e, _sign, _exponent) {
-  //   return new core.Token("Num", this.source)
-  // },
+  id(_first, _rest) {
+    return new core.Token("Id", this.source)
+  },
   intlit(_digits) {
     return new core.Token("Int", this.source)
   },

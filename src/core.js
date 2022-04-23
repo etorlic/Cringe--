@@ -44,8 +44,8 @@ export class Else {
 }
 
 export class FunctionDeclaration {
-  constructor(type, id, params, body) {
-    Object.assign(this, { type, id, params, body })
+  constructor(type, id, params, block) {
+    Object.assign(this, { type, id, params, block })
   }
 }
 
@@ -85,6 +85,10 @@ export class Call {
   }
 }
 
+export class BreakStatement {
+  // Intentionally empty
+}
+
 export class Type {
   // Type of all basic type int, float, string, etc. and superclass of others
   static BOOLEAN = new Type("boolin")
@@ -97,8 +101,12 @@ export class Type {
   }
 }
 
-export class BreakStatement {
-  // Intentionally empty
+export class StructType extends Type {
+  // Generated when processing a type declaration
+  constructor(name, fields) {
+    super(name.lexeme)
+    Object.assign(this, { fields })
+  }
 }
 
 export class ArrayType extends Type {
@@ -160,14 +168,22 @@ export class Token {
 }
 
 export class Variable {
-  constructor(name, readOnly) {
-    Object.assign(this, { name, readOnly })
+  constructor(name) {
+    Object.assign(this, { name})
   }
 }
 
 export class Function {
-  constructor(name, parameters, readOnly) {
-    Object.assign(this, { name, parameters, readOnly })
+  constructor(name, params, type) {
+    Object.assign(this, { name, params, type })
+  }
+}
+
+export class FunctionType extends Type {
+  // Example: (boolean,[string]?)->float
+  constructor(paramTypes, returnType) {
+    super(`(${paramTypes.map(t => t.description).join(",")})->${returnType.description}`)
+    Object.assign(this, { paramTypes, returnType })
   }
 }
 
