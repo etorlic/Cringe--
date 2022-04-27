@@ -313,6 +313,7 @@ import {
 
     }
     ReturnStatement(s) {
+      console.log("in return, s = ", s)
       checkInFunction(this)
       this.analyze(s.value)
       checkReturnsCorrectType(this, s.value)
@@ -328,11 +329,13 @@ import {
       if (s.elseifs.constructor === Array) {
         // It's a block of statements, make a new context
         this.newChildContext().analyze(s.elseifs)
-      } else if (s.elseifs) {
+      } 
+      if (s.elseifs) {
         // It's a trailing if-statement, so same context
         this.newChildContext().analyze(s.elseStatement)
-      }else if (s.elseStatement){
-        this.analyze(s.elseStatement)
+      }
+      if (s.elseStatement){
+        this.newChildContext().analyze(s.elseStatement)
       }
     }
     ElseIf(s) {
@@ -340,7 +343,9 @@ import {
       checkBoolean(s.condition)
       this.newChildContext().analyze(s.block)
     }
-
+    Else(s) {
+      this.newChildContext().analyze(s.block)
+    }
     WhileStatement(s) {
       this.analyze(s.test)
       checkBoolean(s.test)
