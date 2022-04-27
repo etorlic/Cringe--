@@ -22,9 +22,10 @@ const expected = `   1 | Program statements=[#2,#3,#5,#13,#14,#19]
   16 | PrintStatement argument=(Id,"x")
   17 | Assignment target=(Id,"x") source=#18
   18 | BinaryExpression op=(Sym,"+") left=(Id,"x") right=(Int,"1")
-  19 | FunctionDeclaration type=(Sym,"boolin") id=(Id,"exampleFunction") params=[#20] body=[#21]
-  20 | FuncParam type=(Sym,"boolin") id=(Id,"vibe")
-  21 | ReturnStatement value=(Id,"vibe")`
+  19 | FunctionDeclaration type=#20 id=(Id,"exampleFunction") params=[#21] block=[#22]
+  20 | Type typename='boolin'
+  21 | FuncParam type=#20 id=(Id,"vibe")
+  22 | ReturnStatement value=(Id,"vibe")`
 
 
 describe("The AST generator", () => {
