@@ -84,12 +84,6 @@ export default function generate(program) {
     Function(f) {
       return targetName(f)
     },
-    Increment(s) {
-      output.push(`${gen(s.variable)}++;`)
-    },
-    Decrement(s) {
-      output.push(`${gen(s.variable)}--;`)
-    },
     Assignment(s) {
       output.push(`${gen(s.target)} = ${gen(s.source)};`)
     },
@@ -124,12 +118,8 @@ export default function generate(program) {
       gen(s.body)
       output.push("}")
     },
-    RepeatStatement(s) {
-      // JS can only repeat n times if you give it a counter variable!
-      const i = targetName({ name: "i" })
-      output.push(`for (let ${i} = 0; ${i} < ${gen(s.count)}; ${i}++) {`)
-      gen(s.body)
-      output.push("}")
+    PrintStatement(s) {
+      output.push(`console.log(${gen(s.argument)})`)
     },
     ForRangeStatement(s) {
       const i = targetName(s.iterator)
