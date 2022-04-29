@@ -39,7 +39,11 @@ const syntaxChecks = [
 const syntaxErrors = [
   ["non-letter in an identifier", "pog ab😭c = 2;;", /Line 1, col 7:/],
   ["malformed number", "pog x == 2.;;", /Line 1, col 12:/],
-  ["a float with an E but no exponent", "pog x == 5E * 11;;", /Line 1, col 11:/],
+  [
+    "a float with an E but no exponent",
+    "pog x == 5E * 11;;",
+    /Line 1, col 11:/,
+  ],
   ["a missing right operand", "pog x == 5 - ;;", /Line 1, col 14:/],
   ["a non-operator", "retweet:7 * ::2 _ 3::;;", /Line 1, col 17:/],
   ["an expression starting with a :", "dab :;;", /Line 1, col 6:/],
@@ -64,6 +68,7 @@ const syntaxErrors = [
     'retweet:"ab\\zcdef":;;',
     /Line 1, col 13/,
   ],
+  ["array expression without elements", "pog[] a == [];;", /Line 1, col 13/],
 ]
 
 describe("The parser", () => {

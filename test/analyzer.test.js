@@ -5,15 +5,26 @@ import * as core from "../src/core.js"
 
 // Programs that are semantically correct
 const semanticChecks = [
-  ["variable declarations and assignments", 'pog x == 5;; pog y == 0;; x==y;;'],
-  ["initialize with empty array", "pog[] emptyList == [];;"],
+  ["variable declarations and assignments", "pog x == 5;; pog y == 0;; x==y;;"],
   ["assign arrays", "pog[][] nonEmptyList == [[1,2],[3,4]];;"],
   ["return", "flossin boolin f:boolin x: { dab based;; }"],
   ["assign variables", "pog a == 3;; pog b==1;;a==b;;b==a;;"],
-  ["return in nested if", "flossin  boolin f:boolin x: {boolin isBased == based;; vibeCheck:isBased: {dab based;;}}"],
-  ["break in nested if", "infiniteLoop :based: {boolin isBased == based;; vibeCheck:isBased: {break;;}}"],
-  ["long if", "boolin isBased == based;; vibeCheck:isBased: {retweet:based:;;} badVibes {retweet:badVibes:;;}"],
-  ["else if", "boolin isBased == based;; vibeCheck:isBased: {retweet:based:;;} recount:isBased: {retweet:based:;;} badVibes {retweet:badVibes:;;}"],
+  [
+    "return in nested if",
+    "flossin  boolin f:boolin x: {boolin isBased == based;; vibeCheck:isBased: {dab based;;}}",
+  ],
+  [
+    "break in nested if",
+    "infiniteLoop :based: {boolin isBased == based;; vibeCheck:isBased: {break;;}}",
+  ],
+  [
+    "long if",
+    "boolin isBased == based;; vibeCheck:isBased: {retweet:based:;;} badVibes {retweet:badVibes:;;}",
+  ],
+  [
+    "else if",
+    "boolin isBased == based;; vibeCheck:isBased: {retweet:based:;;} recount:isBased: {retweet:based:;;} badVibes {retweet:badVibes:;;}",
+  ],
   ["conditionals with ints", "retweet: based ? 8 : 5:;;"],
   ["conditionals with doubls", "retweet: based ? 8.2 : 5.4:;;"],
   ["conditionals with strings", 'retweet: 1<2 ? "x" : "y":;;'],
@@ -26,20 +37,53 @@ const semanticChecks = [
   ["shifts", "retweet:1<<3<<5<<8>>2>>0:;;"],
   ["arithmetic", "pog x==1;;retweet:2*3-x+5**-3/2-5%8:;;"],
   ["subscript exp", "pog a==[1,2];; retweet:a[0]:;;"],
-  ["assigned functions", "flossin pog f:boolin x: { dab 3;;} pog g==f;; g==f;;"],
-  ["call of assigned functions", "flossin pog f:boolin x: { dab 3;;} pog g==f;; g:based:;;"],
-  ["call of assigned function in expression","flossin pog f:pog x, boolin y: { dab 3;;} pog g==f;; retweet:g:1,based::;;f==g;;"],
+  [
+    "assigned functions",
+    "flossin pog f:boolin x: { dab 3;;} pog g==f;; g==f;;",
+  ],
+  [
+    "call of assigned functions",
+    "flossin pog f:boolin x: { dab 3;;} pog g==f;; g:based:;;",
+  ],
+  [
+    "call of assigned function in expression",
+    "flossin pog f:pog x, boolin y: { dab 3;;} pog g==f;; retweet:g:1,based::;;f==g;;",
+  ],
 ]
 
 // Programs that are syntactically correct but have semantic errors
 const semanticErrors = [
-  ["add to an non int", "boolin x==unbased;;x==x+1;", /an integer, found boolean/],
-  ["non-int decrement", 'manyCars x=="Test";;x==x-1;', /an integer, found string/],
+  [
+    "add to an non int",
+    "boolin x==unbased;;x==x+1;",
+    /an integer, found boolean/,
+  ],
+  [
+    "non-int decrement",
+    'manyCars x=="Test";;x==x-1;',
+    /an integer, found string/,
+  ],
   ["undeclared id", "retweet:x:;;", /Identifier x not declared/],
-  ["redeclared id", "pog x == 1;;pog x == 1;;", /Identifier x already declared/],
-  ["assign bad type", "pog x==1;x==based;;", /Cannot assign a boolean to a int/],
-  ["assign array to non array", "pog x==1;;x==[1,2];;", /Cannot assign a \[int\] to a int/],
-  ["assign bad array type", "pog[] x==[1];;x==['hello'];;", /Cannot assign a \[string\] to a \[int\]/],
+  [
+    "redeclared id",
+    "pog x == 1;;pog x == 1;;",
+    /Identifier x already declared/,
+  ],
+  [
+    "assign bad type",
+    "pog x==1;x==based;;",
+    /Cannot assign a boolean to a int/,
+  ],
+  [
+    "assign array to non array",
+    "pog x==1;;x==[1,2];;",
+    /Cannot assign a \[int\] to a int/,
+  ],
+  [
+    "assign bad array type",
+    "pog[] x==[1];;x==['hello'];;",
+    /Cannot assign a \[string\] to a \[int\]/,
+  ],
   ["break outside loop", "break;;", /Break can only appear in a loop/],
   [
     "break inside function",
@@ -52,33 +96,85 @@ const semanticErrors = [
     "flossin pog f:: {dab;;}",
     /should be returned here/,
   ],
-  ["return type mismatch", "flossin pog f:: {dab unbased;;}", /boolean to a int/],
+  [
+    "return type mismatch",
+    "flossin pog f:: {dab unbased;;}",
+    /boolean to a int/,
+  ],
   ["non-boolean short if test", "vibeCheck:1: {}", /a boolean, found int/],
-  ["non-boolean if test", "vibeCheck:1: {} badVibes {}", /a boolean, found int/],
+  [
+    "non-boolean if test",
+    "vibeCheck:1: {} badVibes {}",
+    /a boolean, found int/,
+  ],
   ["non-boolean while test", "infiniteLoop:1: {}", /a boolean, found int/],
   ["non-boolean conditional test", " retweet:1?2:3:;;", /a boolean, found int/],
-  ["diff types in conditional arms", " retweet:based ? 1:based:;;", /not have the same type/],
+  [
+    "diff types in conditional arms",
+    " retweet:based ? 1:based:;;",
+    /not have the same type/,
+  ],
   ["bad types for ||", " retweet:unbased||1:;;", /a boolean, found int/],
   ["bad types for &&", " retweet:unbased&&1:;;", /a boolean, found int/],
-  ["bad types for ==", " retweet:unbased=1:;;", /Operands do not have the same type/],
-  ["bad types for !=", " retweet:unbased!=1:;;", /Operands do not have the same type/],
-  ["bad types for +", " retweet:unbased+1:;;", /number or string, found boolean/],
+  [
+    "bad types for ==",
+    " retweet:unbased=1:;;",
+    /Operands do not have the same type/,
+  ],
+  [
+    "bad types for !=",
+    " retweet:unbased!=1:;;",
+    /Operands do not have the same type/,
+  ],
+  [
+    "bad types for +",
+    " retweet:unbased+1:;;",
+    /number or string, found boolean/,
+  ],
   ["bad types for -", " retweet:unbased-1:;;", /a number, found boolean/],
   ["bad types for *", " retweet:unbased*1:;;", /a number, found boolean/],
   ["bad types for /", " retweet:unbased/1:;;", /a number, found boolean/],
   ["bad types for **", " retweet:unbased**1:;;", /a number, found boolean/],
-  ["bad types for <", " retweet:unbased<1:;;", /number or string, found boolean/],
-  ["bad types for <=", " retweet:unbased<=1:;;", /number or string, found bool/],
+  [
+    "bad types for <",
+    " retweet:unbased<1:;;",
+    /number or string, found boolean/,
+  ],
+  [
+    "bad types for <=",
+    " retweet:unbased<=1:;;",
+    /number or string, found bool/,
+  ],
   ["bad types for >", " retweet:unbased>1:;;", /number or string, found bool/],
-  ["bad types for >=", " retweet:unbased>=1:;;", /number or string, found bool/],
+  [
+    "bad types for >=",
+    " retweet:unbased>=1:;;",
+    /number or string, found bool/,
+  ],
   ["bad types for ==", " retweet:2=2.0:;;", /not have the same type/],
   ["bad types for !=", " retweet:unbased!=1:;;", /not have the same type/],
   ["bad types for negation", " retweet:-based:;;", /a number, found boolean/],
   ["bad types for not", ' retweet:!"hello":;;', /a boolean, found string/],
-  ["non-integer index", "pog[] a=[1]; retweet:a[unbased]:;;", /integer, found boolean/],
-  ["diff type array elements", " retweet:[3,3.0]:;;", /Not all elements have the same type/],
-  ["shadowing", "pog x = 1;;\ninfiniteLoop: based: {pog x == 1;;}", /Identifier x already declared/],
-  ["call of uncallable", "pog x == 1;;\n retweet:x:::;;", /Call of non-function/],
+  [
+    "non-integer index",
+    "pog[] a=[1]; retweet:a[unbased]:;;",
+    /integer, found boolean/,
+  ],
+  [
+    "diff type array elements",
+    " retweet:[3,3.0]:;;",
+    /Not all elements have the same type/,
+  ],
+  [
+    "shadowing",
+    "pog x = 1;;\ninfiniteLoop: based: {pog x == 1;;}",
+    /Identifier x already declared/,
+  ],
+  [
+    "call of uncallable",
+    "pog x == 1;;\n retweet:x:::;;",
+    /Call of non-function/,
+  ],
   [
     "Too many args",
     "flossin pog f: pog x: {dab 5;;}\nf:1,2:;;",
@@ -108,9 +204,17 @@ const semanticErrors = [
      f=g;;`,
     /Cannot assign a \(int\)->boolean to a \(int\)->int/,
   ],
-  ["bad call to stdlib sin()", " retweet:sin:unbased::;;", /Cannot assign a boolean to a float/],
+  [
+    "bad call to stdlib sin()",
+    " retweet:sin:unbased::;;",
+    /Cannot assign a boolean to a float/,
+  ],
   ["Non-type in param", "pog x==1;;flossin pog f:x:{dab 5;;}", /Type expected/],
-  ["Non-type in return type", "pog x==1;;flossin f:: {dab 1;;}", /Type expected/],
+  [
+    "Non-type in return type",
+    "pog x==1;;flossin f:: {dab 1;;}",
+    /Type expected/,
+  ],
 ]
 
 // Test cases for expected semantic graphs after processing the AST. In general
@@ -126,11 +230,16 @@ const letX1 = new core.VariableDeclaration(varX, 1n)
 const assignX2 = new core.Assignment(varX, 2n)
 
 const functionF = new core.FunctionDeclaration(
-  Object.assign(new core.Function()))
+  Object.assign(new core.Function())
+)
 
 const graphChecks = [
   ["Variable created & resolved", "pog x==1;; x==2;;", [letX1, assignX2]],
-  ["functions created & resolved", "flossin boolin f:boolin x: { dab based;;}", [functionF]],
+  [
+    "functions created & resolved",
+    "flossin boolin f:boolin x: { dab based;;}",
+    [functionF],
+  ],
 ]
 
 describe("The analyzer", () => {

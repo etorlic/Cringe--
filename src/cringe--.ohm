@@ -52,7 +52,7 @@ CringeMinusMinus {
              | string
              | id
 
-  CringeArray = "[" Args "]"
+  CringeArray = "[" Elements "]"
   Block       = "{" Statement* "}"
   Call        = id ":" Args ":"
   If          = "vibeCheck" ":" Exp ":" Block ElseIf* Else?
@@ -62,6 +62,7 @@ CringeMinusMinus {
   ParamDec	  = ListOf<FuncParam, ","> --paramdec
   Params      = ListOf<id, ",">
   Args        = ListOf<Exp, ",">
+  Elements    = NonemptyListOf<Exp, ",">
   function    = "flossin" ~idchar
   while       = "infiniteLoop" ~idchar
   break       = "break" ~alnum
