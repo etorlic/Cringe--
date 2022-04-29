@@ -91,6 +91,10 @@ const optimizers = {
   ShortReturnStatement(s) {
     return s
   },
+  PrintStatement(s) {
+    s.argument = optimize(s.argument)
+    return s
+  },
   IfStatement(s) {
     s.test = optimize(s.test)
     s.consequent = optimize(s.consequent)
@@ -110,6 +114,7 @@ const optimizers = {
   },
   WhileStatement(s) {
     s.test = optimize(s.test)
+    console.log(s.test)
     if (s.test === false) {
       // while false is a no-op
       return []
@@ -222,8 +227,8 @@ const optimizers = {
     e.index = optimize(e.index)
     return e
   },
-  ArrayExpression(e) {
-    e.elements = optimize(e.elements)
+  CringeArray(e) {
+    e.values = optimize(e.values)
     return e
   },
   EmptyArray(e) {

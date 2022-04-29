@@ -454,7 +454,7 @@ class Context {
       [t.value, t.type] = [Number(t.lexeme), Type.DOUBLE]
     if (t.category === "String") [t.value, t.type] = [t.lexeme, Type.STRING]
     if (t.category === "Bool")
-      [t.value, t.type] = [t.lexeme === "true", Type.BOOLEAN]
+      [t.value, t.type] = [t.lexeme === "based", Type.BOOLEAN]
   }
   Array(a) {
     a.forEach((item) => this.analyze(item))
