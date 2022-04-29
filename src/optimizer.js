@@ -114,7 +114,6 @@ const optimizers = {
   },
   WhileStatement(s) {
     s.test = optimize(s.test)
-    console.log(s.test)
     if (s.test === false) {
       // while false is a no-op
       return []

@@ -156,11 +156,8 @@ export default function generate(program) {
     SubscriptExpression(e) {
       return `${gen(e.array)}[${gen(e.index)}]`
     },
-    ArrayExpression(e) {
-      return `[${gen(e.elements).join(",")}]`
-    },
-    EmptyArray(e) {
-      return "[]"
+    CringeArray(e) {
+      return `[${gen(e.values).join(",")}]`
     },
     MemberExpression(e) {
       const object = gen(e.object)
