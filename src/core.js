@@ -7,7 +7,6 @@
 
 import util from "util"
 
-/* c8 ignore next 5 */
 export class Program {
   constructor(statements) {
     this.statements = statements
@@ -50,7 +49,6 @@ export class FunctionDeclaration {
   }
 }
 
-/* c8 ignore next 5 */
 export class FuncParam {
   constructor(type, id) {
     Object.assign(this, { type, id })
@@ -103,7 +101,14 @@ export class Type {
   }
 }
 
-/* c8 ignore next 12 */
+export class StructType extends Type {
+  // Generated when processing a type declaration
+  constructor(name, fields) {
+    super(name.lexeme)
+    Object.assign(this, { fields })
+  }
+}
+
 export class ArrayType extends Type {
   constructor(elementType) {
     if (elementType instanceof Type) {
@@ -153,7 +158,6 @@ export class MemberExpression {
 // Token objects are wrappers around the Nodes produced by Ohm. We use
 // them here just for simple things like numbers and identifiers. The
 // Ohm node will go in the "source" property.
-/* c8 ignore next 7 */
 export class Token {
   constructor(category, source) {
     Object.assign(this, { category, source })
@@ -175,7 +179,6 @@ export class Function {
   }
 }
 
-/* c8 ignore next 8 */
 export class FunctionType extends Type {
   // Example: (boolean,[string]?)->float
   constructor(paramTypes, returnType) {
@@ -197,12 +200,13 @@ export const standardLibrary = Object.freeze({
 })
 
 // Throw an error message that takes advantage of Ohm's messaging
-/* c8 ignore next 2 8/
 export function error(message, token) {
+  //   if (token?.source) {
+  //     throw new Error(`${token.source.getLineAndColumnMessage()}${message}`)
+  //   }
   throw new Error(message)
 }
 
-/* c8 ignore next 43 */
 // Return a compact and pretty string representation of the node graph,
 // taking care of cycles. Written here from scratch because the built-in
 // inspect function, while nice, isn't nice enough. Defined properly in
