@@ -28,6 +28,7 @@ export default function optimize(node) {
 }
 
 const optimizers = {
+  /* c8 ignore next 3 */
   Program(p) {
     p.statements = optimize(p.statements)
     return p
@@ -35,18 +36,6 @@ const optimizers = {
   VariableDeclaration(d) {
     d.variable = optimize(d.variable)
     d.initializer = optimize(d.initializer)
-    return d
-  },
-  TypeDeclaration(d) {
-    d.type = optimize(d.type)
-    return d
-  },
-  Field(f) {
-    f.name = f.name.lexeme
-    return f
-  },
-  StructType(d) {
-    d.fields = optimize(d.fields)
     return d
   },
   FunctionDeclaration(d) {
@@ -91,6 +80,21 @@ const optimizers = {
     if (s.condition.constructor === Boolean) {
       return s.condition ? s.block : s.elseifs ? s.elseifs : s.elseStatement
     }
+    /* c8 ignore next */
+    return s
+  },
+  ElseIf(s) {
+    s.condition = optimize(s.condition)
+    s.block = optimize(s.block)
+    if (s.condition.constructor === Boolean) {
+      return s.condition ? s.block : undefined
+    }
+    /* c8 ignore next */
+    return s
+  },
+  Else(s) {
+    s.block = optimize(s.block)
+    return s
   },
   WhileStatement(s) {
     s.test = optimize(s.test)
@@ -189,6 +193,7 @@ const optimizers = {
   String(e) {
     return e
   },
+  /* c8 ignore next 3 */
   Token(t) {
     return t.value ?? t.lexeme
   },
