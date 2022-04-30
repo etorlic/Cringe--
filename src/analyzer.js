@@ -342,10 +342,6 @@ class Context {
       // It's a block of statements, make a new context
       this.newChildContext().analyze(s.elseifs)
     }
-    if (s.elseifs) {
-      // It's a trailing if-statement, so same context
-      this.newChildContext().analyze(s.elseStatement)
-    }
     if (s.elseStatement) {
       this.newChildContext().analyze(s.elseStatement)
     }

@@ -19,11 +19,11 @@ const semanticChecks = [
   ],
   [
     "long if",
-    "boolin isBased == based;; vibeCheck:isBased: {retweet:based:;;} badVibes {retweet:badVibes:;;}",
+    "boolin isBased == based;; vibeCheck:isBased: {retweet:based:;;} badVibes {retweet:unbased:;;}",
   ],
   [
     "else if",
-    "boolin isBased == based;; vibeCheck:isBased: {retweet:based:;;} recount:isBased: {retweet:based:;;} badVibes {retweet:badVibes:;;}",
+    "boolin isBased == based;; vibeCheck:isBased: {retweet:based:;;} recount:isBased: {retweet:based:;;} badVibes {retweet:unbased:;;}",
   ],
   ["conditionals with ints", "retweet: based ? 8 : 5:;;"],
   ["conditionals with doubls", "retweet: based ? 8.2 : 5.4:;;"],
@@ -226,7 +226,7 @@ const Int = core.Type.INT
 
 const varX = Object.assign(new core.Variable("x", false), { type: Int })
 
-const letX1 = new core.VariableDeclaration(varX, 1n)
+const letX1 = new core.VariableDeclaration(core.Type.INT, varX, 1n)
 const assignX2 = new core.Assignment(varX, 2n)
 
 const functionF = new core.FunctionDeclaration(
