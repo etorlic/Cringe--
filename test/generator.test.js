@@ -123,10 +123,12 @@ const fixtures = [
     source: `
       pog[] a == [30, 20, 10];;
       pog[] b == [10, 40 - 20, 30];;
+      retweet:a[1] + b[1]:;;
     `,
     expected: dedent`
       let a_1 = [30,20,10];
       let b_2 = [10,20,30];
+      console.log((a_1[1] + b_2[1]))
     `,
   },
   //   {
