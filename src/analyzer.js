@@ -418,7 +418,9 @@ class Context {
   }
   SubscriptExpression(e) {
     this.analyze(e.array)
-    e.type = e.array.type.baseType
+    console.log(e.array)
+
+    e.type = e.array.type.elementType
     this.analyze(e.index)
     checkInteger(e.index)
   }
