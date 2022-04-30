@@ -342,10 +342,6 @@ class Context {
       // It's a block of statements, make a new context
       this.newChildContext().analyze(s.elseifs)
     }
-    if (s.elseifs) {
-      // It's a trailing if-statement, so same context
-      this.newChildContext().analyze(s.elseStatement)
-    }
     if (s.elseStatement) {
       this.newChildContext().analyze(s.elseStatement)
     }
@@ -372,32 +368,33 @@ class Context {
     e.type = e.consequent.type
   }
   BinaryExpression(e) {
+    let operator = e.op.lexeme ? e.op.lexeme : e.op
     this.analyze(e.left)
     this.analyze(e.right)
-    if (["&", "|", "^", "<<", ">>"].includes(e.op.lexeme)) {
+    if (["&", "|", "^", "<<", ">>"].includes(operator)) {
       checkInteger(e.left)
       checkInteger(e.right)
       e.type = Type.INT
-    } else if (["+"].includes(e.op.lexeme)) {
+    } else if (["+"].includes(operator)) {
       checkNumericOrString(e.left)
       checkHaveSameType(e.left, e.right)
       e.type = e.left.type
-    } else if (["-", "*", "/", "%", "**"].includes(e.op.lexeme)) {
+    } else if (["-", "*", "/", "%", "**"].includes(operator)) {
       checkNumeric(e.left)
       checkHaveSameType(e.left, e.right)
       e.type = e.left.type
-    } else if (["<", "<=", ">", ">="].includes(e.op.lexeme)) {
+    } else if (["<", "<=", ">", ">="].includes(operator)) {
       checkNumericOrString(e.left)
       checkHaveSameType(e.left, e.right)
       e.type = Type.BOOLEAN
-    } else if (["==", "!="].includes(e.op.lexeme)) {
+    } else if (["=", "!="].includes(operator)) {
       checkHaveSameType(e.left, e.right)
       e.type = Type.BOOLEAN
-    } else if (["&&", "||"].includes(e.op.lexeme)) {
+    } else if (["&&", "||"].includes(operator)) {
       checkBoolean(e.left)
       checkBoolean(e.right)
       e.type = Type.BOOLEAN
-    } else if (["??"].includes(e.op.lexeme)) {
+    } else if (["??"].includes(operator)) {
       checkIsAnOptional(e.left)
       checkAssignable(e.right, { toType: e.left.type.baseType })
       e.type = e.left.type
