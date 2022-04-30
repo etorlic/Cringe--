@@ -53,16 +53,8 @@ const semanticChecks = [
 
 // Programs that are syntactically correct but have semantic errors
 const semanticErrors = [
-  [
-    "add to an non int",
-    "boolin x==unbased;;x==x+1;;",
-    /a number or string/,
-  ],
-  [
-    "non-int decrement",
-    'manyCars x=="Test";;x==x-1;;',
-    /a number/,
-  ],
+  ["add to an non int", "boolin x==unbased;;x==x+1;;", /a number or string/],
+  ["non-int decrement", 'manyCars x=="Test";;x==x-1;;', /a number/],
   ["undeclared id", "retweet:x:;;", /Identifier x not declared/],
   [
     "redeclared id",
@@ -81,7 +73,7 @@ const semanticErrors = [
   ],
   [
     "assign bad array type",
-    "pog[] x==[1];;x==[\"hello\"];;",
+    'pog[] x==[1];;x==["hello"];;',
     /Cannot assign a \[manyCars\] to a \[pog\]/,
   ],
   ["break outside loop", "break;;", /Break can only appear in a loop/],
@@ -90,18 +82,18 @@ const semanticErrors = [
     "infiniteLoop:based: {flossin pog f:: {break;;}}",
     /Break can only appear in a loop/,
   ],
-  ["return outside function", "dab based;;", /Return can only appear in a function/],
+  [
+    "return outside function",
+    "dab based;;",
+    /Return can only appear in a function/,
+  ],
   [
     "return type mismatch",
     "flossin pog f:: {dab unbased;;}",
     /Return type does not match declared function type/,
   ],
   ["non-boolean short if test", "vibeCheck:1: {}", /Expected a boolean/],
-  [
-    "non-boolean if test",
-    "vibeCheck:1: {} badVibes {}",
-    /Expected a boolean/,
-  ],
+  ["non-boolean if test", "vibeCheck:1: {} badVibes {}", /Expected a boolean/],
   ["non-boolean while test", "infiniteLoop:1: {}", /Expected a boolean/],
   ["non-boolean conditional test", " retweet:1?2:3:;;", /Expected a boolean/],
   [
@@ -121,31 +113,15 @@ const semanticErrors = [
     " retweet:unbased!=1:;;",
     /Operands do not have the same type/,
   ],
-  [
-    "bad types for +",
-    " retweet:unbased+1:;;",
-    /Expected a number or string/,
-  ],
+  ["bad types for +", " retweet:unbased+1:;;", /Expected a number or string/],
   ["bad types for -", " retweet:unbased-1:;;", /Expected a number/],
   ["bad types for *", " retweet:unbased*1:;;", /Expected a number/],
   ["bad types for /", " retweet:unbased/1:;;", /Expected a number/],
   ["bad types for **", " retweet:unbased**1:;;", /Expected a number/],
-  [
-    "bad types for <",
-    " retweet:unbased<1:;;",
-    /Expected a number or string/,
-  ],
-  [
-    "bad types for <=",
-    " retweet:unbased<=1:;;",
-    /Expected a number or string/,
-  ],
+  ["bad types for <", " retweet:unbased<1:;;", /Expected a number or string/],
+  ["bad types for <=", " retweet:unbased<=1:;;", /Expected a number or string/],
   ["bad types for >", " retweet:unbased>1:;;", /Expected a number or string/],
-  [
-    "bad types for >=",
-    " retweet:unbased>=1:;;",
-    /Expected a number or string/,
-  ],
+  ["bad types for >=", " retweet:unbased>=1:;;", /Expected a number or string/],
   ["bad types for ==", " retweet:2=2.0:;;", /not have the same type/],
   ["bad types for !=", " retweet:unbased!=1:;;", /not have the same type/],
   ["bad types for negation", " retweet:-based:;;", /Expected a number/],
@@ -217,15 +193,6 @@ const functionF = new core.FunctionDeclaration(
   Object.assign(new core.Function())
 )
 
-const graphChecks = [
-  ["Variable created & resolved", "pog x==1;; x==2;;", [letX1, assignX2]],
-  [
-    "functions created & resolved",
-    "flossin boolin f:boolin x: { dab based;;}",
-    [functionF],
-  ],
-]
-
 describe("The analyzer", () => {
   for (const [scenario, source] of semanticChecks) {
     it(`recognizes ${scenario}`, () => {
@@ -235,11 +202,6 @@ describe("The analyzer", () => {
   for (const [scenario, source, errorMessagePattern] of semanticErrors) {
     it(`throws on ${scenario}`, () => {
       assert.throws(() => analyze(ast(source)), errorMessagePattern)
-    })
-  }
-  for (const [scenario, source, graph] of graphChecks) {
-    it(`properly rewrites the AST for ${scenario}`, () => {
-      assert.deepStrictEqual(analyze(ast(source)), new core.Program(graph))
     })
   }
 })

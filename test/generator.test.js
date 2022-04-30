@@ -21,18 +21,18 @@ const fixtures = [
     `,
     expected: dedent`
       let x_1 = 21;
-      x_1++;
-      x_1--;
+      x_1 = (x_1 + 1);
+      x_1 = (x_1 - 1);
       let y_2 = true;
       y_2 = (((5 ** -(x_1)) / -(100)) > -(x_1));
-      console.log(((y_2 && y_2) || ((x_1 * 2) !== 5)));
+      console.log(((y_2 && y_2) || ((x_1 * 2) !== 5)))
     `,
   },
   {
     name: "if",
     source: `
       pog x == 0;;
-      vibeCheck:x = 0: { retweet:"1":;; }
+      vibeCheck:x = 0: { retweet:1:;; }
       vibeCheck:x = 0: { retweet:1:;; } badVibes { retweet:2:;; }
       vibeCheck:x = 0: { retweet:1:;;} recount :x = 2: { retweet:3:;;}
       vibeCheck:x = 0: { retweet:1:;;} recount :x = 2: { retweet:3:;;} badVibes { retweet:4:;; }
@@ -40,28 +40,28 @@ const fixtures = [
     expected: dedent`
       let x_1 = 0;
       if ((x_1 === 0)) {
-        console.log("1");
+        console.log(1)
       }
+      
       if ((x_1 === 0)) {
-        console.log(1);
+        console.log(1)
       } else {
-        console.log(2);
+        console.log(2)
       }
+
       if ((x_1 === 0)) {
-        console.log(1);
+        console.log(1)
+      } else if ((x_1 === 2)) { 
+        console.log(3)
+      }
+
+      if ((x_1 === 0)) {
+        console.log(1)
+      } else if ((x_1 === 2)) { 
+        console.log(3)
       } else {
-        if ((x_1 === 2)) {
-          console.log(3);
-        }
+          console.log(4)
       }
-      if ((x_1 === 0)) {
-        console.log(1);
-      } else
-        if ((x_1 === 2)) {
-          console.log(3);
-        } else {
-          console.log(4);
-        }
     `,
   },
   {
@@ -94,18 +94,19 @@ const fixtures = [
   {
     name: "functions",
     source: `
-      pog z == 0.5;;
-      flossin void f: double x, boolin y: {
-        retweet:based = baed:;;
+      pog a == 0.5;;
+      flossin boolin f:dublin x, boolin y: {
+        retweet:based = based:;;
         dab based;;
       }
-      flossin boolean g:: {
+      flossin boolin g:dublin z: {
         dab unbased;;
       }
-      f:z, g:::;;
+      boolin b == g:a:;;
+      f:a, b:;;
     `,
     expected: dedent`
-      let z_1 = 0.5;
+      let a_1 = 0.5;
       function f_2(x_3, y_4) {
         console.log(based === based);
         return true;
@@ -113,20 +114,19 @@ const fixtures = [
       function g_5() {
         return false;
       }
-      f_2(z_1, g_5());
+      let b_2 = g_5(a);
+      f_2(a_1, b_2);
     `,
   },
   {
     name: "arrays",
     source: `
-      boolin[] a == [based, unbased, based];;
+      pog[] a == [30, 20, 10];;
       pog[] b == [10, 40 - 20, 30];;
-      retweet:a[1] + b[2]:;;
     `,
     expected: dedent`
-      let a_1 = [true,false,true];
+      let a_1 = [30,20,10];
       let b_2 = [10,20,30];
-      console.log(a_1[1] + b_2[2]);
     `,
   },
   //   {

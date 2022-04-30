@@ -65,13 +65,14 @@ export default function generate(program) {
       return targetName(f)
     },
     FunctionDeclaration(d) {
-      output.push(
-        `function ${gen(d.fun)}(${gen(d.fun.parameters).join(", ")}) {`
-      )
-      gen(d.body)
+      console.log("Start of FunDec")
+      console.log("ID of d: " + d.id.lexeme)
+      output.push(`function ${gen(d.value)} (${gen(d.params).join(", ")}) {`)
+      console.log("passes d.params")
+      gen(d.block)
       output.push("}")
     },
-    Parameter(p) {
+    FuncParam(p) {
       return targetName(p)
     },
     Variable(v) {
@@ -91,28 +92,35 @@ export default function generate(program) {
       output.push("break;")
     },
     ReturnStatement(s) {
-      output.push(`return ${gen(s.expression)};`)
+      output.push(`return ${gen(s.value)};`)
     },
-    ShortReturnStatement(s) {
-      output.push("return;")
-    },
-    IfStatement(s) {
-      output.push(`if (${gen(s.test)}) {`)
-      gen(s.consequent)
-      if (s.alternate.constructor === IfStatement) {
-        output.push("} else")
-        gen(s.alternate)
-      } else {
-        output.push("} else {")
-        gen(s.alternate)
-        output.push("}")
+    // ShortReturnStatement(s) {
+    //   output.push("return;")
+    // },
+    If(s) {
+      output.push(`if (${gen(s.condition)}) {`)
+      gen(s.block)
+      if (s.elseifs) {
+        gen(s.elseifs)
       }
+      if (s.elseStatement) {
+        gen(s.elseStatement)
+      }
+      output.push(`}`)
     },
-    ShortIfStatement(s) {
-      output.push(`if (${gen(s.test)}) {`)
-      gen(s.consequent)
-      output.push("}")
+    ElseIf(s) {
+      output.push(`} else if (${gen(s.condition)}) { `)
+      gen(s.block)
     },
+    Else(s) {
+      output.push(`} else {`)
+      gen(s.block)
+    },
+    // ShortIfStatement(s) {
+    //   output.push(`if (${gen(s.test)}) {`)
+    //   gen(s.consequent)
+    //   output.push("}")
+    // },
     WhileStatement(s) {
       output.push(`while (${gen(s.test)}) {`)
       gen(s.body)
@@ -121,27 +129,30 @@ export default function generate(program) {
     PrintStatement(s) {
       output.push(`console.log(${gen(s.argument)})`)
     },
-    ForRangeStatement(s) {
-      const i = targetName(s.iterator)
-      const op = s.op === "..." ? "<=" : "<"
-      output.push(
-        `for (let ${i} = ${gen(s.low)}; ${i} ${op} ${gen(s.high)}; ${i}++) {`
-      )
-      gen(s.body)
-      output.push("}")
-    },
-    ForStatement(s) {
-      output.push(`for (let ${gen(s.iterator)} of ${gen(s.collection)}) {`)
-      gen(s.body)
-      output.push("}")
-    },
+    // ForRangeStatement(s) {
+    //   const i = targetName(s.iterator)
+    //   const op = s.op === "..." ? "<=" : "<"
+    //   output.push(
+    //     `for (let ${i} = ${gen(s.low)}; ${i} ${op} ${gen(s.high)}; ${i}++) {`
+    //   )
+    //   gen(s.body)
+    //   output.push("}")
+    // },
+    // ForStatement(s) {
+    //   output.push(`for (let ${gen(s.iterator)} of ${gen(s.collection)}) {`)
+    //   gen(s.body)
+    //   output.push("}")
+    // },
     Conditional(e) {
       return `((${gen(e.test)}) ? (${gen(e.consequent)}) : (${gen(
         e.alternate
       )}))`
     },
     BinaryExpression(e) {
-      const op = { "==": "===", "!=": "!==" }[e.op] ?? e.op
+      let op = { "==": "===", "!=": "!==" }[e.op] ?? e.op
+      if (op == "=") {
+        op = "==="
+      }
       return `(${gen(e.left)} ${op} ${gen(e.right)})`
     },
     UnaryExpression(e) {

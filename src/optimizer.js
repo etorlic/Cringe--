@@ -54,6 +54,9 @@ const optimizers = {
     if (d.block) d.block = optimize(d.block)
     return d
   },
+  FuncParam(d) {
+    return d
+  },
   Variable(v) {
     return v
   },
@@ -91,6 +94,16 @@ const optimizers = {
     if (s.condition.constructor === Boolean) {
       return s.condition ? s.block : s.elseifs ? s.elseifs : s.elseStatement
     }
+    return s
+  },
+  ElseIf(s) {
+    s.condition = optimize(s.condition)
+    s.block = optimize(s.block)
+    return s
+  },
+  Else(s) {
+    s.block = optimize(s.block)
+    return s
   },
   WhileStatement(s) {
     s.test = optimize(s.test)
