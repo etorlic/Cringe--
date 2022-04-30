@@ -18,11 +18,9 @@ const eq = (x, y) => new core.BinaryExpression("==", x, y)
 const times = (x, y) => new core.BinaryExpression("*", x, y)
 const neg = (x) => new core.UnaryExpression("-", x)
 const array = (...elements) => new core.CringeArray(elements)
-//const emptyArray = new core.EmptyArray(core.Type.INT)
 const sub = (a, e) => new core.SubscriptExpression(a, e)
 const unwrapElse = (o, e) => new core.BinaryExpression("??", o, e)
 const conditional = (x, y, z) => new core.Conditional(x, y, z)
-// const emptyOptional = new core.EmptyOptional(core.Type.INT)
 const some = (x) => new core.UnaryExpression("some", x)
 
 const tests = [
@@ -55,9 +53,6 @@ const tests = [
   ["removes left true from &&", and(true, less(x, 1)), less(x, 1)],
   ["removes right true from &&", and(less(x, 1), true), less(x, 1)],
   ["removes x=x", new core.Assignment("x", "x"), []],
-  //   ["removes x=x at beginning", [new core.Assignment(x, x), xpp], [xpp]],
-  //   ["removes x=x at end", [xpp, new core.Assignment(x, x)], [xpp]],
-  //   ["removes x=x in middle", [xpp, new core.Assignment(x, x), xpp], [xpp, xpp]],
   [
     "optimizes if-true",
     new core.If(true, [new core.BreakStatement()], []),
@@ -74,6 +69,20 @@ const tests = [
     [new core.BreakStatement()],
   ],
   [
+    "optimize else-if-true",
+    new core.ElseIf(true, [new core.BreakStatement()]),
+    [new core.BreakStatement()],
+  ],
+  [
+    "optimize else-if-false",
+    new core.ElseIf(false, [new core.BreakStatement()]),
+  ],
+  [
+    "optimize else",
+    new core.Else(new core.Assignment("x", "x")),
+    new core.Else([]),
+  ],
+  [
     "optimizes while-false",
     [new core.WhileStatement(false, [new core.BreakStatement()])],
     [],
@@ -83,23 +92,6 @@ const tests = [
     [new core.PrintStatement(1 + 2)],
     [new core.PrintStatement(3)],
   ],
-  //   ["optimizes repeat-0", [new core.RepeatStatement(0, xpp)], []],
-  //   [
-  //     "optimizes for-range",
-  //     [new core.ForRangeStatement(x, 5, "...", 3, xpp)],
-  //     [],
-  //   ],
-  //   [
-  //     "optimizes for-empty-array",
-  //     [new core.ForStatement(x, emptyArray, xpp)],
-  //     [],
-  //   ],
-  //   [
-  //     "applies if-false after folding",
-  //     new core.ShortIfStatement(eq(1, 1), xpp),
-  //     xpp,
-  //   ],
-  //   ["optimizes away nil", unwrapElse(emptyOptional, 3), 3],
   ["optimizes left conditional true", conditional(true, 55, 89), 55],
   ["optimizes left conditional false", conditional(false, 55, 89), 89],
   ["optimizes in functions", intFun(return1p1), intFun(return2)],
@@ -113,21 +105,11 @@ const tests = [
       new core.Assignment(x, new core.BinaryExpression("*", x, "z")),
       new core.Assignment(x, new core.UnaryExpression("not", x)),
       new core.Call(identity, new core.MemberExpression(x, "f")),
-      //   new core.VariableDeclaration(
-      //     "q",
-      //     false,
-      //     new core.EmptyArray(core.Type.FLOAT)
-      //   ),
       new core.VariableDeclaration("r", false, "x"),
       new core.WhileStatement(true, [new core.BreakStatement()]),
       new core.PrintStatement(3),
-      //new core.RepeatStatement(5, [new core.ReturnStatement(1)]),
+      new core.Else(new core.Assignment("x", 3)),
       conditional(x, 1, 2),
-      //   unwrapElse(some(x), 7),
-      //   new core.If(x, [], []),
-      //   new core.ShortIfStatement(x, []),
-      //   new core.ForRangeStatement(x, 2, "..<", 5, []),
-      //   new core.ForStatement(x, array(1, 2, 3), []),
     ]),
   ],
 ]
