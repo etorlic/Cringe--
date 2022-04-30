@@ -2,7 +2,7 @@ CringeMinusMinus {
   Program = Statement+
     
   Statement = Type id "==" Exp ";;"                     -- declaration
-  			     | If
+  		     | If
              | function Type id ":" ParamDec ":"  Block  -- fundec
              | id "==" Exp ";;"                         -- assign
              | Call ";;"                                -- call
@@ -46,7 +46,7 @@ CringeMinusMinus {
              | ":" Exp ":"                              -- parens
              
   Type	     = Type "[" "]"                             -- array
-  			     | int 
+  		     | int 
              | boolean
              | double
              | string
@@ -72,8 +72,8 @@ CringeMinusMinus {
   boolean     = "boolin" ~idchar
   string      = "manyCars" ~idchar
   double      = "dublin" ~idchar
-  return 	    = "dab" ~idchar
-  print	 	    = "retweet" ~idchar
+  return 	  = "dab" ~idchar
+  print	 	  = "retweet" ~idchar
   keyword     =  while | true | false | int | string | double | boolean | function | print | break
   num         = digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
   id          = ~keyword letter idchar*

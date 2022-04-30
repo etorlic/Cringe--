@@ -1,3 +1,5 @@
-retweet:[ 0, 1+2, 9 ]:;;
-
-retweet: 1+2 : ;;
+pog x == 0;;
+      vibeCheck:x = 0: { retweet:"1":;; }
+      vibeCheck:x = 0: { retweet:1:;; } badVibes { retweet:2:;; }
+      vibeCheck:x = 0: { retweet:1:;;} recount :x = 2: { retweet:3:;;}
+      vibeCheck:x = 0: { retweet:1:;;} recount :x = 2: { retweet:3:;;} badVibes { retweet:4:;; }
