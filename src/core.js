@@ -169,7 +169,7 @@ export class Token {
 
 export class Variable {
   constructor(name) {
-    Object.assign(this, { name})
+    Object.assign(this, { name })
   }
 }
 
@@ -182,7 +182,9 @@ export class Function {
 export class FunctionType extends Type {
   // Example: (boolean,[string]?)->float
   constructor(paramTypes, returnType) {
-    super(`(${paramTypes.map(t => t.typename).join(",")})->${returnType.typename}`)
+    super(
+      `(${paramTypes.map((t) => t.typename).join(",")})->${returnType.typename}`
+    )
     Object.assign(this, { paramTypes, returnType })
   }
 }

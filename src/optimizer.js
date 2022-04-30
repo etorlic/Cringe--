@@ -50,9 +50,8 @@ const optimizers = {
     return d
   },
   FunctionDeclaration(d) {
-    d.fun = optimize(d.fun)
-    d.parameters = optimize(d.parameters)
-    if (d.body) d.body = optimize(d.body)
+    d.params = optimize(d.params)
+    if (d.block) d.block = optimize(d.block)
     return d
   },
   Variable(v) {
@@ -60,18 +59,6 @@ const optimizers = {
   },
   Function(f) {
     return f
-  },
-  Parameter(p) {
-    p.name = optimize(p.name)
-    return p
-  },
-  Increment(s) {
-    s.variable = optimize(s.variable)
-    return s
-  },
-  Decrement(s) {
-    s.variable = optimize(s.variable)
-    return s
   },
   Assignment(s) {
     s.source = optimize(s.source)
@@ -85,73 +72,32 @@ const optimizers = {
     return s
   },
   ReturnStatement(s) {
-    s.expression = optimize(s.expression)
-    return s
-  },
-  ShortReturnStatement(s) {
+    s.value = optimize(s.value)
     return s
   },
   PrintStatement(s) {
     s.argument = optimize(s.argument)
     return s
   },
-  IfStatement(s) {
-    s.test = optimize(s.test)
-    s.consequent = optimize(s.consequent)
-    s.alternate = optimize(s.alternate)
-    if (s.test.constructor === Boolean) {
-      return s.test ? s.consequent : s.alternate
+  If(s) {
+    s.condition = optimize(s.condition)
+    s.block = optimize(s.block)
+    if (s.elseifs) {
+      s.elseifs = optimize(s.elseifs)
     }
-    return s
-  },
-  ShortIfStatement(s) {
-    s.test = optimize(s.test)
-    s.consequent = optimize(s.consequent)
-    if (s.test.constructor === Boolean) {
-      return s.test ? s.consequent : []
+    if (s.elseStatement) {
+      s.elseStatement = optimize(s.elseStatement)
     }
-    return s
+    if (s.condition.constructor === Boolean) {
+      return s.condition ? s.block : s.elseifs ? s.elseifs : s.elseStatement
+    }
   },
   WhileStatement(s) {
     s.test = optimize(s.test)
     if (s.test === false) {
-      // while false is a no-op
       return []
     }
     s.body = optimize(s.body)
-    return s
-  },
-  RepeatStatement(s) {
-    s.count = optimize(s.count)
-    if (s.count === 0) {
-      // repeat 0 times is a no-op
-      return []
-    }
-    s.body = optimize(s.body)
-    return s
-  },
-  ForRangeStatement(s) {
-    s.iterator = optimize(s.iterator)
-    s.low = optimize(s.low)
-    s.op = optimize(s.op)
-    s.high = optimize(s.high)
-    s.body = optimize(s.body)
-    if (s.low.constructor === Number) {
-      if (s.high.constructor === Number) {
-        if (s.low > s.high) {
-          return []
-        }
-      }
-    }
-    return s
-  },
-  ForStatement(s) {
-    s.iterator = optimize(s.iterator)
-    s.collection = optimize(s.collection)
-    s.body = optimize(s.body)
-    if (s.collection.constructor === core.EmptyArray) {
-      return []
-    }
     return s
   },
   Conditional(e) {
@@ -167,12 +113,7 @@ const optimizers = {
     e.op = optimize(e.op)
     e.left = optimize(e.left)
     e.right = optimize(e.right)
-    if (e.op === "??") {
-      // Coalesce Empty Optional Unwraps
-      if (e.left.constructor === core.EmptyOptional) {
-        return e.right
-      }
-    } else if (e.op === "&&") {
+    if (e.op === "&&") {
       // Optimize boolean constants in && and ||
       if (e.left === true) return e.right
       else if (e.right === true) return e.left
@@ -218,9 +159,6 @@ const optimizers = {
     }
     return e
   },
-  EmptyOptional(e) {
-    return e
-  },
   SubscriptExpression(e) {
     e.array = optimize(e.array)
     e.index = optimize(e.index)
@@ -228,9 +166,6 @@ const optimizers = {
   },
   CringeArray(e) {
     e.values = optimize(e.values)
-    return e
-  },
-  EmptyArray(e) {
     return e
   },
   MemberExpression(e) {
@@ -255,9 +190,6 @@ const optimizers = {
     return e
   },
   Token(t) {
-    // All tokens get optimized away and basically replace with either their
-    // value (obtained by the analyzer for literals and ids) or simply with
-    // lexeme (if a plain symbol like an operator)
     return t.value ?? t.lexeme
   },
   Array(a) {
