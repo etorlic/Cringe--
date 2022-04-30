@@ -1,3 +1,5 @@
-flossin pog f:pog x: { dab 1;; }
-flossin pog g: boolin z:{ dab 5;; }
-f=g;;
+pog x == 0;;
+      vibeCheck:x = 0: { retweet:"1":;; }
+      vibeCheck:x = 0: { retweet:1:;; } badVibes { retweet:2:;; }
+      vibeCheck:x = 0: { retweet:1:;;} recount :x = 2: { retweet:3:;;}
+      vibeCheck:x = 0: { retweet:1:;;} recount :x = 2: { retweet:3:;;} badVibes { retweet:4:;; }
