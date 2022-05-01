@@ -278,7 +278,7 @@ class Context {
   FunctionDeclaration(d) {
     this.analyze(d.type)
 
-    d.value = new Function(d.id, d.params, d.type)
+    d.value = new Function(d.id.lexeme, d.params, d.type)
     checkIsAType(d.value.type)
 
     // When entering a function body, we must reset the inLoop setting,
@@ -297,6 +297,7 @@ class Context {
     childContext.analyze(d.block)
   }
   FuncParam(p) {
+    console.log("in func param p =", p)
     this.analyze(p.type)
     if (p.type instanceof Token) p.type = p.type.value
     checkIsAType(p.type)

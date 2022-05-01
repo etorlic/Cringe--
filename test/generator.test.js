@@ -107,14 +107,14 @@ const fixtures = [
     `,
     expected: dedent`
       let a_1 = 0.5;
-      function f_2(x_3, y_4) {
-        console.log(based === based);
+      function f_2 (x_3, y_4) {
+        console.log((true === true))
         return true;
       }
-      function g_5() {
+      function g_5 (z_6) {
         return false;
       }
-      let b_2 = g_5(a);
+      let b_7 = g_5(a);
       f_2(a_1, b_2);
     `,
   },
@@ -131,21 +131,6 @@ const fixtures = [
       console.log((a_1[1] + b_2[1]))
     `,
   },
-  //   {
-  //     name: "standard library",
-  //     source: `
-  //       let x = 0.5;
-  //       print(sin(x) - cos(x) + exp(x) * ln(x) / hypot(2.3, x));
-  //       print(bytes("∞§¶•"));
-  //       print(codepoints("💪🏽💪🏽🖖👩🏾💁🏽‍♀️"));
-  //     `,
-  //     expected: dedent`
-  //       let x_1 = 0.5;
-  //       console.log(((Math.sin(x_1) - Math.cos(x_1)) + ((Math.exp(x_1) * Math.log(x_1)) / Math.hypot(2.3,x_1))));
-  //       console.log([...Buffer.from("∞§¶•", "utf8")]);
-  //       console.log([...("💪🏽💪🏽🖖👩🏾💁🏽‍♀️")].map(s=>s.codePointAt(0)));
-  //     `,
-  //   },
 ]
 
 describe("The code generator", () => {

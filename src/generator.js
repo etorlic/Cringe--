@@ -29,7 +29,7 @@ export default function generate(program) {
       if (!mapping.has(entity)) {
         mapping.set(entity, mapping.size + 1)
       }
-      return `${entity.name ?? entity.description}_${mapping.get(entity)}`
+      return `${entity.name ?? entity.lexeme}_${mapping.get(entity)}`
     }
   })(new Map())
 
@@ -65,15 +65,12 @@ export default function generate(program) {
       return targetName(f)
     },
     FunctionDeclaration(d) {
-      console.log("Start of FunDec")
-      console.log("ID of d: " + d.id.lexeme)
       output.push(`function ${gen(d.value)} (${gen(d.params).join(", ")}) {`)
-      console.log("passes d.params")
       gen(d.block)
       output.push("}")
     },
     FuncParam(p) {
-      return targetName(p)
+      return targetName(p.id)
     },
     Variable(v) {
       // Standard library constants just get special treatment
@@ -177,11 +174,7 @@ export default function generate(program) {
       return `(${object}${chain}[${field}])`
     },
     Call(c) {
-      const targetCode = standardFunctions.has(c.callee)
-        ? standardFunctions.get(c.callee)(gen(c.args))
-        : c.callee.constructor === StructType
-        ? `new ${gen(c.callee)}(${gen(c.args).join(", ")})`
-        : `${gen(c.callee)}(${gen(c.args).join(", ")})`
+      const targetCode = `${gen(c.callee)}(${gen(c.args).join(", ")})`
       // Calls in expressions vs in statements are handled differently
       if (c.callee instanceof Type || c.callee.type.returnType !== Type.VOID) {
         return targetCode
