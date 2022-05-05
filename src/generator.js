@@ -11,13 +11,6 @@ export default function generate(program) {
 
   const standardFunctions = new Map([
     [stdlib.contents.print, (x) => `console.log(${x})`],
-    // [stdlib.contents.sin, (x) => `Math.sin(${x})`],
-    // [stdlib.contents.cos, (x) => `Math.cos(${x})`],
-    // [stdlib.contents.exp, (x) => `Math.exp(${x})`],
-    // [stdlib.contents.ln, (x) => `Math.log(${x})`],
-    // [stdlib.contents.hypot, ([x, y]) => `Math.hypot(${x},${y})`],
-    // [stdlib.contents.bytes, (s) => `[...Buffer.from(${s}, "utf8")]`],
-    // [stdlib.contents.codepoints, (s) => `[...(${s})].map(s=>s.codePointAt(0))`],
   ])
 
   // Variable and function names in JS will be suffixed with _1, _2, _3,
@@ -88,9 +81,6 @@ export default function generate(program) {
     ReturnStatement(s) {
       output.push(`return ${gen(s.value)};`)
     },
-    // ShortReturnStatement(s) {
-    //   output.push("return;")
-    // },
     If(s) {
       output.push(`if (${gen(s.condition)}) {`)
       gen(s.block)
@@ -110,11 +100,6 @@ export default function generate(program) {
       output.push(`} else {`)
       gen(s.block)
     },
-    // ShortIfStatement(s) {
-    //   output.push(`if (${gen(s.test)}) {`)
-    //   gen(s.consequent)
-    //   output.push("}")
-    // },
     WhileStatement(s) {
       output.push(`while (${gen(s.test)}) {`)
       gen(s.body)
@@ -123,20 +108,6 @@ export default function generate(program) {
     PrintStatement(s) {
       output.push(`console.log(${gen(s.argument)})`)
     },
-    // ForRangeStatement(s) {
-    //   const i = targetName(s.iterator)
-    //   const op = s.op === "..." ? "<=" : "<"
-    //   output.push(
-    //     `for (let ${i} = ${gen(s.low)}; ${i} ${op} ${gen(s.high)}; ${i}++) {`
-    //   )
-    //   gen(s.body)
-    //   output.push("}")
-    // },
-    // ForStatement(s) {
-    //   output.push(`for (let ${gen(s.iterator)} of ${gen(s.collection)}) {`)
-    //   gen(s.body)
-    //   output.push("}")
-    // },
     Conditional(e) {
       return `((${gen(e.test)}) ? (${gen(e.consequent)}) : (${gen(
         e.alternate

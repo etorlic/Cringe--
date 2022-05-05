@@ -195,7 +195,6 @@ class Context {
     return this.locals.has(name) || this.parent?.sees(name)
   }
   add(name, entity) {
-    // TODO: Decide if we want to allow shadowing
     if (this.sees(name)) error(`Identifier ${name} already declared`)
     this.locals.set(name, entity)
   }
@@ -220,7 +219,6 @@ class Context {
   }
   VariableDeclaration(d) {
     this.analyze(d.initializer)
-    //TODO: Decide if we want read only variables
     d.variable.value = new Variable(d.variable.lexeme)
     d.variable.value.type = d.initializer.type
     checkIsAType(d.variable.value.type)
@@ -265,7 +263,6 @@ class Context {
     checkInLoop(this)
   }
   ReturnStatement(s) {
-    // console.log("in return, s = ", s)
     checkInFunction(this)
     this.analyze(s.value)
     checkReturnsCorrectType(this, s.value)
