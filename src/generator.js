@@ -3,7 +3,7 @@
 // Invoke generate(program) with the program node to get back the JavaScript
 // translation as a string.
 
-import { If, Type, StructType } from "./core.js"
+import { If, Type } from "./core.js"
 import * as stdlib from "./stdlib.js"
 
 export default function generate(program) {
@@ -58,9 +58,6 @@ export default function generate(program) {
       output.push("}")
       output.push("}")
     },
-    // StructType(t) {
-    //   return targetName(t)
-    // },
     Field(f) {
       return targetName(f)
     },

@@ -5,6 +5,7 @@ import ast from "../src/ast.js"
 const syntaxChecks = [
   ["a simple string literal", 'retweet:"Hello, World!":;;'],
   ["variable declarations", "pog x == 5;;"],
+  ["array declarations", "retweet:[1,2,3]:;;"],
   ["function with one param", "flossin boolin f:boolin x: { dab based;; }"],
   ["if", "vibeCheck :x=5: {dab x;;}"],
   ["else", "vibeCheck :x=5: {dab based;;} badVibes {dab unbased;;}"],

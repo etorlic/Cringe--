@@ -30,6 +30,8 @@ const semanticChecks = [
   ["conditionals with strings", 'retweet: 1<2 ? "x" : "y":;;'],
   ["||", "retweet: based || 1<2 || !based:;;"],
   ["&&", "retweet:based&&1<2&&unbased&&!based:;;"],
+  ["-", "pog x == -5;; retweet:x:;;"],
+  ["!", "boolin x == !unbased;; retweet:x:;;"],
   ["bit ops", "retweet: :1&2: | :9^3::;;"],
   ["relations", 'retweet: 1<=2 && "x">"y" && 3.5<1.2 :;;'],
   ["ok to == arrays", "retweet: [1]=[5,3]:;;"],
@@ -48,6 +50,10 @@ const semanticChecks = [
   [
     "call of assigned function in expression",
     "flossin pog f:pog x, boolin y: { dab 3;;} pog g==f;; retweet:g:1,based::;;f==g;;",
+  ],
+  [
+    "equality of functions",
+    "flossin pog f:pog x, boolin y: { dab 3;;} pog g==f;; retweet:g=f:;;",
   ],
 ]
 

@@ -29,7 +29,6 @@ import {
   Type,
   FunctionType,
   ArrayType,
-  StructType,
   Function,
   Token,
   error,
@@ -121,10 +120,6 @@ function checkIsAType(e) {
   check(e instanceof Type, "Type expected", e)
 }
 
-function checkIsAnOptional(e) {
-  check(e.type.constructor === OptionalType, "Optional expected", e)
-}
-
 function checkArray(e) {
   check(e.type.constructor === ArrayType, "Array expected", e)
 }
@@ -142,39 +137,12 @@ function checkAllHaveSameType(expressions) {
   )
 }
 
-function checkNotRecursive(struct) {
-  check(
-    !struct.fields.map((f) => f.type).includes(struct),
-    "Struct type must not be recursive"
-  )
-}
-
 function checkAssignable(e, { toType: type }) {
   check(
     type === Type.ANY || e.type.isAssignableTo(type),
     `Cannot assign a ${e.type.typename} to a ${type.typename}`
   )
 }
-
-function checkNotReadOnly(e) {
-  const readOnly = e instanceof Token ? e.value.readOnly : e.readOnly
-  check(!readOnly, `Cannot assign to constant ${e?.lexeme ?? e.name}`, e)
-}
-
-function checkFieldsAllDistinct(fields) {
-  check(
-    new Set(fields.map((f) => f.name.lexeme)).size === fields.length,
-    "Fields must be distinct"
-  )
-}
-
-function checkMemberDeclared(field, { in: struct }) {
-  check(
-    struct.type.fields.map((f) => f.name.lexeme).includes(field),
-    "No such field"
-  )
-}
-
 function checkInLoop(context) {
   check(context.inLoop, "Break can only appear in a loop")
 }
@@ -185,28 +153,16 @@ function checkInFunction(context) {
 
 function checkReturnsCorrectType(context, returnValue) {
   check(
-    context.function.type.returnType.isEquivalentTo(returnValue.type),
+    context.function.type.returnType.isAssignableTo(returnValue.type),
     "Return type does not match declared function type"
   )
 }
 
 function checkCallable(e) {
   check(
-    e.constructor === StructType || e.type.constructor == FunctionType,
+    e.type.constructor == FunctionType,
     "Call of non-function or non-constructor"
   )
-}
-
-function checkReturnsNothing(f) {
-  check(f.type.returnType === Type.VOID, "Something should be returned here")
-}
-
-function checkReturnsSomething(f) {
-  check(f.type.returnType !== Type.VOID, "Cannot return a value here")
-}
-
-function checkReturnable({ expression: e, from: f }) {
-  checkAssignable(e, { toType: f.type.returnType })
 }
 
 function checkArgumentsMatch(args, targetTypes) {
@@ -219,11 +175,6 @@ function checkArgumentsMatch(args, targetTypes) {
 
 function checkFunctionCallArguments(args, calleeType) {
   checkArgumentsMatch(args, calleeType.paramTypes)
-}
-
-function checkConstructorArguments(args, structType) {
-  const fieldTypes = structType.fields.map((f) => f.type)
-  checkArgumentsMatch(args, fieldTypes)
 }
 
 /***************************************
@@ -297,29 +248,17 @@ class Context {
     childContext.analyze(d.block)
   }
   FuncParam(p) {
-    console.log("in func param p =", p)
     this.analyze(p.type)
-    if (p.type instanceof Token) p.type = p.type.value
     checkIsAType(p.type)
     this.add(p.id.lexeme, p)
   }
   Type(t) {
     checkIsAType(t)
   }
-  ArrayType(t) {
-    this.analyze(t.elementType)
-    if (t.elementType instanceof Token) t.elementType = t.elementType.value
-  }
-  OptionalType(t) {
-    this.analyze(t.baseType)
-    if (t.baseType instanceof Token) t.baseType = t.baseType.value
-  }
-
   Assignment(s) {
     this.analyze(s.source)
     this.analyze(s.target)
     checkAssignable(s.source, { toType: s.target.type })
-    checkNotReadOnly(s.target)
     return s
   }
   BreakStatement(s) {
@@ -395,30 +334,21 @@ class Context {
       checkBoolean(e.left)
       checkBoolean(e.right)
       e.type = Type.BOOLEAN
-    } else if (["??"].includes(operator)) {
-      checkIsAnOptional(e.left)
-      checkAssignable(e.right, { toType: e.left.type.baseType })
-      e.type = e.left.type
-    }
+    } 
   }
   UnaryExpression(e) {
     this.analyze(e.operand)
-    if (e.op.lexeme === "#") {
-      checkArray(e.operand)
-      e.type = Type.INT
-    } else if (e.op.lexeme === "-") {
+    if (e.op.lexeme === "-") {
       checkNumeric(e.operand)
       e.type = e.operand.type
     } else if (e.op.lexeme === "!") {
       checkBoolean(e.operand)
       e.type = Type.BOOLEAN
-    } else {
-      // Operator is "some"
-      e.type = new OptionalType(e.operand.type?.value ?? e.operand.type)
-    }
+    } 
   }
   SubscriptExpression(e) {
     this.analyze(e.array)
+    checkArray(e.array)
     e.type = e.array.type.elementType
     this.analyze(e.index)
     checkInteger(e.index)
@@ -430,16 +360,11 @@ class Context {
   }
   Call(c) {
     this.analyze(c.callee)
-    const callee = c.callee?.value ?? c.callee
+    const callee = c.callee?.value 
     checkCallable(callee)
     this.analyze(c.args)
-    if (callee.constructor === StructType) {
-      checkConstructorArguments(c.args, callee)
-      c.type = callee
-    } else {
-      checkFunctionCallArguments(c.args, callee.type)
-      c.type = callee.type.returnType
-    }
+    checkFunctionCallArguments(c.args, callee.type)
+    c.type = callee.type.returnType
   }
   Token(t) {
     // For ids being used, not defined

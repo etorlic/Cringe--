@@ -104,9 +104,6 @@ const astBuilder = cringeMMGrammar.createSemantics().addOperation("ast", {
   Exp7_subscript(array, _left, subscript, _right) {
     return new core.SubscriptExpression(array.ast(), subscript.ast())
   },
-  Exp7_member(object, _dot, field) {
-    return new core.MemberExpression(object.ast(), field.ast())
-  },
   Call(id, _left, args, _right) {
     return new core.Call(id.ast(), args.asIteration().ast())
   },

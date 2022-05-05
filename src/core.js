@@ -101,23 +101,10 @@ export class Type {
   }
 }
 
-export class StructType extends Type {
-  // Generated when processing a type declaration
-  constructor(name, fields) {
-    super(name.lexeme)
-    Object.assign(this, { fields })
-  }
-}
-
 export class ArrayType extends Type {
   constructor(elementType) {
     if (elementType instanceof Type) {
-      //handles array types constructed via declaration, ex: dublin[]
       super(`[${elementType.typename}]`)
-      Object.assign(this, { elementType })
-    } else {
-      //handles array types constructed through an expression, ex: [1,2,3]
-      super(`[${elementType.lexeme}]`)
       Object.assign(this, { elementType })
     }
   }

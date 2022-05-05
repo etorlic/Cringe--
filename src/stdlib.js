@@ -4,11 +4,7 @@
 // are types, and some are functions. Each are defined in this module, and
 // exported in a single object
 
-import { Type, Variable, Function } from "./core.js"
-
-function makeConstant(name, type, value) {
-  return Object.assign(new Variable(name, true), { type, value })
-}
+import { Type, Function } from "./core.js"
 
 function makeFunction(name, type) {
   return Object.assign(new Function(name), { type })
