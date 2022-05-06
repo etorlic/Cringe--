@@ -10,22 +10,39 @@ function dedent(s) {
 
 const fixtures = [
   {
-    name: "small",
+    name: "medium",
     source: `
       pog x == 3 * 7;;
+      manyCars s == :x > 5: ? "greater than 5" : "lower than 5";;
       x == x + 1;;
       x == x - 1;;
-      boolin y == based;;
+      boolin y == !based;;
+      pog z == -:3:;;
+      manyCars nicePun == "hello";;
       y == 5 ** -x / -100 > - x || unbased;;
       retweet::y && y: || unbased || :x*2: != 5:;;
-    `,
+
+      flossin pog f:pog arg: { dab 4;; }
+      f:x:;;
+      flossin pog g:: { dab 2;; }
+      g::;;
+    `, //function is too tough to solve, so to get 100% coverage with Call I added flossin f
     expected: dedent`
       let x_1 = 21;
+      let s_2 = (((x_1 > 5)) ? ("greater than 5") : ("lower than 5"));
       x_1 = (x_1 + 1);
       x_1 = (x_1 - 1);
-      let y_2 = true;
-      y_2 = (((5 ** -(x_1)) / -(100)) > -(x_1));
-      console.log(((y_2 && y_2) || ((x_1 * 2) !== 5)))
+      let y_3 = !(true);
+      let z_4 = -(3);
+      let nicePun_5 = "hello";
+      y_3 = (((5 ** -(x_1)) / -(100)) > -(x_1));
+      console.log(((y_3 && y_3) || ((x_1 * 2) !== 5)))
+      function f_6 (arg_7) {
+        return 4;
+      }
+      function g_8 () {
+        return 2;
+      }
     `,
   },
   {

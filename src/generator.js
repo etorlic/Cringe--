@@ -41,19 +41,6 @@ export default function generate(program) {
       // already checked that we never updated a const, so let is always fine.
       output.push(`let ${gen(d.variable)} = ${gen(d.initializer)};`)
     },
-    TypeDeclaration(d) {
-      // The only type declaration in Carlos is the struct! Becomes a JS class.
-      output.push(`class ${gen(d.type)} {`)
-      output.push(`constructor(${gen(d.type.fields).join(",")}) {`)
-      for (let field of d.type.fields) {
-        output.push(`this[${JSON.stringify(gen(field))}] = ${gen(field)};`)
-      }
-      output.push("}")
-      output.push("}")
-    },
-    Field(f) {
-      return targetName(f)
-    },
     FunctionDeclaration(d) {
       output.push(`function ${gen(d.value)} (${gen(d.params).join(", ")}) {`)
       gen(d.block)
@@ -64,9 +51,6 @@ export default function generate(program) {
     },
     Variable(v) {
       // Standard library constants just get special treatment
-      if (v === stdlib.contents.π) {
-        return "Math.PI"
-      }
       return targetName(v)
     },
     Function(f) {
@@ -121,13 +105,7 @@ export default function generate(program) {
       return `(${gen(e.left)} ${op} ${gen(e.right)})`
     },
     UnaryExpression(e) {
-      if (e.op === "some") {
-        e.op = ""
-      }
       return `${e.op}(${gen(e.operand)})`
-    },
-    EmptyOptional(e) {
-      return "undefined"
     },
     SubscriptExpression(e) {
       return `${gen(e.array)}[${gen(e.index)}]`
@@ -135,12 +113,7 @@ export default function generate(program) {
     CringeArray(e) {
       return `[${gen(e.values).join(",")}]`
     },
-    MemberExpression(e) {
-      const object = gen(e.object)
-      const field = JSON.stringify(gen(e.field))
-      const chain = e.isOptional ? "?." : ""
-      return `(${object}${chain}[${field}])`
-    },
+    //for some reason when there's no comment here, we get an uncovered line
     Call(c) {
       const targetCode = `${gen(c.callee)}(${gen(c.args).join(", ")})`
       // Calls in expressions vs in statements are handled differently

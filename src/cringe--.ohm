@@ -3,10 +3,10 @@ CringeMinusMinus {
     
   Statement = Type id "==" Exp ";;"                     -- declaration
   		     | If
-             | function Type id ":" ParamDec ":"  Block  -- fundec
+             | function Type id ":" ParamDec ":"  Block -- fundec
              | id "==" Exp ";;"                         -- assign
              | Call ";;"                                -- call
-             | break ";;"                                --break
+             | break ";;"                               --break
              | while ":" Exp ":" Block                  -- while
              | return Exp ";;" 	                        -- return
              | print ":" Exp ":" ";;"                   -- print
@@ -38,8 +38,8 @@ CringeMinusMinus {
              | doublelit
              | intlit 
              | Call
-             | Exp7 ("[" | "?[") Exp "]"                     --subscript
-             | Exp7 ("." | "?.") id                          --member
+             | Exp7 ("[" | "?[") Exp "]"                --subscript
+             | Exp7 ("." | "?.") id                     --member
              | stringlit
              | id
              | CringeArray
@@ -82,8 +82,8 @@ CringeMinusMinus {
   doublelit   = digit+ "." digit+ (("E" | "e") ("+" | "-")? digit+)?
   stringlit   = "\"" char* "\""
   char        = ~control ~"\\" ~"\"" any
-              | "\\" ("n" | "t" | "\"" | "\\")                --escape
-              | "\\u{" hex hex? hex? hex? hex? hex? "}"       --codepoint
+              | "\\" ("n" | "t" | "\"" | "\\")          --escape
+              | "\\u{" hex hex? hex? hex? hex? hex? "}" --codepoint
   control     = "\x00".."\x1f" | "\x80".."\x9f"
   hex         = hexDigit
   space       += "//" (~"\n" any)* ("\n" | end)         -- comment

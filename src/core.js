@@ -136,6 +136,7 @@ export class SubscriptExpression {
 }
 
 export class MemberExpression {
+  //we don't have structs, classes, etc. so this is obsolete but language breaks if deleted
   // Example: state.population
   constructor(object, field) {
     Object.assign(this, { object, field })
