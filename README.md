@@ -8,7 +8,6 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 ## Features
 
 - Statically Typed
-- Object Oriented
 - Data Structures like Python 
 - End your statements with two semicolons
 - Compare using = and assign using ==
@@ -73,7 +72,7 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 <td>
 
 ```
-  int x == 5;;
+  pog x == 5;;
   vibeCheck :x=5: { 
     retweet:x:;;
   }
@@ -103,7 +102,7 @@ Cringe-- is a language crafted upon the cringeist topics and coding practices of
 <td>
 
 ```
-  int x == 0;;
+  pog x == 0;;
   infiniteLoop :x<10: { 
     retweet:x:
     x == x + 1 ;;
